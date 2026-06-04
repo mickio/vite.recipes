@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rezept SPA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <button id="btn-refresh" type="button">Zufall</button>
+    <form id="search-form">
+      <input type="text" id="search-input" placeholder="Rezept suchen..." required>
+      <button type="submit">Suchen</button>
+    </form>
+  </header>
+
+  <main>
+    <div id="background" class="initial">
+      </div>
+    <div id="front">
+      </div>
+  </main>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

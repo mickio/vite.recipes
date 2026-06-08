@@ -2,11 +2,26 @@ import HomeView from "./views/HomeView.js";
 import SearchView from "./views/SearchView.js";
 import DetailView from "./views/DetailView.js";
 
-const routes = {
-  "/": HomeView,
-  "/search": SearchView,
-  "/details": DetailView
-};
+const routes = [
+  {
+    path:/^\/(index.html|randomRecipe)?$/,
+    viewCls: HomeView,
+    enter: 'slide-left',
+    leave: 'fade'
+  },
+  {
+    path:/^\/search/,
+    viewCls: SearchView,
+    enter: 'zoom',
+    leave: 'enlarge'
+  },
+  {
+    path:/^\/details/,
+    viewCls: DetailView,
+    enter: 'slide-left',
+    leave: 'fade'
+  }
+];
 
 class Router {
   constructor() {
@@ -26,22 +41,25 @@ class Router {
     window.addEventListener("popstate", () => this.route());
   }
 
-  navigateTo(url) {
+  navigateTo(url,params) {
     // Vor dem Verlassen die aktuelle Scrollposition im History-State speichern
     if (history.state) {
       history.replaceState({ ...history.state, scrollTop: this.background.scrollTop }, "");
     }
     history.pushState({ scrollTop: 0 }, "", url);
-    this.route();
+    this.route(params);
   }
 
-  async route() {
+  async route(extParams={}) {
     const path = window.location.pathname;
-    const ViewClass = routes[path] || HomeView;
+    const currentRoute = routes.find((route) => path.match(route.path));
+    console.log(`[router] current view for path ${path} is ${currentRoute?.viewCls.name}`);
+    const ViewClass = currentRoute?.viewCls || HomeView;
     
     // Instanziiere die neue View (übergibt Suchparameter aus der URL)
     const urlParams = new URLSearchParams(window.location.search);
-    this.currentViewInstance = new ViewClass(Object.fromEntries(urlParams.entries()));
+    const params = {...Object.fromEntries(urlParams.entries()),...extParams}
+    this.currentViewInstance = new ViewClass(params);
 
     // 1. Inhalt unsichtbar im Front-Div rendern
     this.front.innerHTML = await this.currentViewInstance.getHtml();
@@ -53,13 +71,15 @@ class Router {
 
     // 2. Schiebe-Animation starten
     this.front.classList.add("slide-in");
+    // this.front.dataset.type = 'enter';
 
     const handleTransitionEnd = (event) => {
+      console.log('[handleTransition]',event)
       if (event.propertyName === "transform") {
         this.front.removeEventListener("transitionend", handleTransitionEnd);
 
         // 3. Inhalt umhängen
-        this.background.innerHTML = this.front.innerHTML;
+        this.background.firstElementChild?this.background.replaceChild(this.front.firstElementChild,this.background.firstElementChild) : this.background.appendChild(this.front.firstElementChild);
         this.background.classList.remove("initial");
 
         // Event-Listener für das frisch umgehängte Background-Div reaktivieren

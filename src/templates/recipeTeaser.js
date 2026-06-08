@@ -1,13 +1,16 @@
-export default (recipeData,ind) => {
-  return `
-<article class="${recipeData.color} gallery-item" data-index="${index??0}">
+export default (recipeData,index) => `
+<article class="${recipeData.color}" data-index="${index??0}">
 	<figure>
-		<img src=${recipeData.image} alt=${recipeData.title??'Ohne Titel'}>
-		<caption><a href=${recipeData.link}><b>${service}</b></a> </caption>
+		<img src=${recipeData.image} alt=${recipeData.title}>
+		<figcaption>
+			<a href=${recipeData.link}>
+				<b>${new URL(recipeData.link).host}</b>
+			</a> 
+		</figcaption>
 	</figure>
 	<div style="flex-grow: 6"></div>
 	<div class="content ${recipeData.typeface}">
-		<h1><a href="/details/${recipeData.title??'Ohne Titel'}?url=${recipeData.link}&title=${recipeData.title??'Ohne Titel'}">${recipeData.title??'Ohne Titel'}</a></h1>
+		<h1><a href="/details/${recipeData.title??'Ohne Titel'}?url=${recipeData.link}&title=${recipeData.title??'Ohne Titel'}" data-link>${recipeData.title??'Ohne Titel'}</a></h1>
 	</div>
 	<div style="flex-grow: 1"></div>
 	<div class="${recipeData.typeface}">

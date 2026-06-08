@@ -35,10 +35,10 @@ export default class RecipeCache {
     const url = recipePayload.link || customUrl;
     const id = this.generateIdFromUrl(url);
 
-    // ID direkt in die Payload injizieren (Top-Level und im details-Objekt)
+    // ID direkt in die Payload injizieren (Top-Level und im result-Objekt)
     recipePayload.id = id;
-    if (recipePayload.details) {
-      recipePayload.details.id = id;
+    if (recipePayload.result) {
+      recipePayload.result.id = id;
     }
 
     cache[id] = recipePayload;

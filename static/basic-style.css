@@ -1,0 +1,351 @@
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/materialicons.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'Material Icons Outlined';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/gok-H7zzDkdnRel8-DQ6KAXJ69wP1tGnf4ZGhUce.woff2) format('woff2');
+  }  
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -moz-font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .material-icons-outlined {
+    font-family: 'Material Icons Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -moz-font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
+  }
+    @font-face {
+    font-family: 'Lobster';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/lobster.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cabin';
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: 100%;
+    src: url(/static/fonts/cabin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/raleway.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Goudy Bookletter 1911';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/goudybookletter1911.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Dancing Script';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/dancingscript.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Josefin Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/josefinsans.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Allan';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/allan.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Cardo';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/Cardo-Regular.ttf) format('ttf');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Molengo';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/molengo.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Lekton';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/lekton.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: 700;
+    src: url(/static/fonts/ubuntu.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Vollkorn';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/vollkorn.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Corben';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/corben.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Nobile';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/nobile.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Droid Serif';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/droidserif.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Droid Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/droidsans.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Arvo';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/arvo.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'PT Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/ptsans.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Allerta';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/allerta.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Crimson Text';
+    font-style: normal;
+    font-weight: 400;
+    src: url(/static/fonts/crimsontext.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+/* Font Stacks */
+.null {
+/* Times New Roman-based stack */
+font-family: Cambria, "Hoefler Text", Utopia, "Liberation Serif", "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
+
+/* Modern Georgia-based serif stack */
+font-family: Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, "DejaVu Serif", "Bitstream Vera Serif", "Liberation Serif", Georgia, serif;
+
+/* Traditional Garamond-based serif stack */
+font-family: "Palatino Linotype", Palatino, Palladio, "URW Palladio L", "Book Antiqua", Baskerville, "Bookman Old Style", "Bitstream Charter", "Nimbus Roman No9 L", Garamond, "Apple Garamond", "ITC Garamond Narrow", "New Century Schoolbook", "Century Schoolbook", "Century Schoolbook L", Georgia, serif;
+
+/* Helvetica/Arial-based sans serif stack */
+font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+/* Verdana-based sans serif stack */
+font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+
+/* Trebuchet-based sans serif stack */
+font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+
+/* Impact-based sans serif stack */
+font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", "Bitstream Vera Sans Bold", "Arial Black", sans-serif;
+
+/* Monospace stack */
+font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+/* Little helpers */
+.is-hidden {
+	display: none !important;
+}
+/* colors */
+:root {
+	--purple: #6b5b95;
+	--yellow: #feb236;
+	--brick-red: #d64161;
+	--orange: #ff7b25;
+	--green: #82b74b;
+	--silver-blue: #034f84;
+}
+.green div {
+	background-color: var(--green);
+}
+.brick-red div {
+	background-color: var(--brick-red);
+}
+.yellow div {
+	background-color: var(--yellow);
+}
+.silver-blue div{
+	background-color: var(--silver-blue);
+}
+.purple div {
+	background-color: var(--purple);
+}
+.orange div {
+	background-color: var(--orange);
+}
+/* Fonts */
+.ubuntu-vollkorn h1 {
+	font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+}
+.ubuntu-vollkorn p {
+	font-family: 'Vollkorn', Georgia, Times, serif;
+}
+.molengo-lekton h1 {
+	font-family: 'Molengo', Georgia, Times, serif;
+}
+.molengo-lekton p {
+	font-family: 'Lekton', Helvetica, Arial, sans-serif;
+}
+.allan-cardo h1 {
+	font-family: 'Allan', Helvetica, Arial, sans-serif;
+}
+.allan-cardo p {
+	font-family: 'Cardo', Georgia, Times, serif;
+}
+.dancing-script-josefin h1 {
+	font-family: 'Dancing Script', Georgia, Times, serif;
+}
+.dancing-script-josefin p {
+	font-family: 'Josefin Sans', Helvetica, Arial, sans-serif;
+}
+.raleway-goudy-bookletter h1 {
+	font-family: 'Raleway', Helvetica, Arial, sans-serif;
+}
+.raleway-goudy-bookletter p {
+	font-family: 'Goudy Bookletter 1911', Georgia, Times, serif;
+}
+.lobster-cabin h1 {
+	font-family: 'Lobster', Georgia, Times, serif;
+}
+.lobster-cabin p {
+	font-family: 'Cabin', Helvetica, Arial, sans-serif;
+}
+.corben-nobile h1 {
+	font-family: 'Corben', Georgia, Times, serif;
+}
+.corben-nobile p {
+	font-family: 'Nobile', Helvetica, Arial, sans-serif;
+}
+.droid h1 {
+	font-family: 'Droid Serif', Georgia, Times, serif;
+}
+.droid p {
+	font-family: 'Droid Sans', Helvetica, Arial, sans-serif;
+}
+.arvo-pt-sans h1 {
+	font-family: 'Arvo', Georgia, Times, serif;
+}
+.arvo-pt-sans p {
+	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+}
+.alerta-crimson h1 {
+	font-family: 'Allerta', Helvetica, Arial, sans-serif;
+}
+.alerta-crimson p {
+	font-family: 'Crimson Text', Georgia, Times, serif;
+}
+/* more globals */
+.overlay {
+    position: fixed;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    /* background-color: #8a2be242; */
+}
+.error {
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: red;
+  padding: 50px;
+  border: red solid;
+  box-shadow: 2px 2px 50px rgba(101, 101, 163, 0.63);
+  background: white;
+  border-radius: 5px;
+  font-size: larger;
+}
+.info {
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--silver-blue);
+  padding: 50px;
+  border: var(--silver-blue);
+  box-shadow: 2px 2px 50px rgba(101, 101, 163, 0.63);
+  background: white;
+  border-radius: 5px;
+  font-size: larger;
+}
+.message {
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--message-color);
+  padding: 50px;
+  margin: 50px;
+  border: 2px solid var(--message-color);
+  box-shadow: 2px 2px 50px rgba(101, 101, 163, 0.63);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(3px);
+  border-radius: 5px;
+  font-size: larger;
+}
+
+body {
+  margin: 0px; background-image: url("/assets/kochbild-unscharf.jpg"); background-position: left top; object-fit: cover; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; opacity: 1; transition: all 3s ease-out 0s; position: static;
+}

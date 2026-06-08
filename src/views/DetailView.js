@@ -1,17 +1,18 @@
 import AbstractView from "./AbstractView.js";
+import recipeDetails from '../templates/recipeDetails.js';
 import { proxy } from "../app.js";
 
 export default class DetailView extends AbstractView {
   async getHtml() {
     const title = this.params.title;
     const url = this.params.url;
-    const recipe = await proxy.getDetails(title, url);
-
+    const fullRecipe = await proxy.getDetails(title, url);
+    const recipe = {...this.params,...fullRecipe.result}
+    console.log('DetailView gets:',recipe)
     return `
-      <div class="view-detail">
+      <div class="recipe-details">
         <button class="back-btn" id="detail-back">⬅ Zurück zur Suche</button>
-        <h2>${recipe.details.title}</h2>
-        <div>${recipe.details.content}</div>
+        ${recipeDetails(recipe)}
       </div>
     `;
   }

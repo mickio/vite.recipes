@@ -1,8 +1,8 @@
 import AbstractView from "./AbstractView.js";
 import { proxy } from "../app.js";
 import { router } from "../router.js";
-import { recipeTeaser } from '../templates/recipeTeaser.js';
-import { getRandomColor, getRandomTypeface } from '../DetailView.js';
+import recipeTeaser from '../templates/recipeTeaser.js';
+import { getRandomColor, getRandomTypeface } from './DetailView.js';
 
 export default class SearchView extends AbstractView {
   constructor(params) {
@@ -15,7 +15,7 @@ export default class SearchView extends AbstractView {
     const query = this.params.q || "";
     
     // Iterator initialisieren (10er-Schritte sind Standard)
-    this.iterator = proxy.searchIterator(query, 10);
+    this.iterator = proxy.searchIterator(query, 2);
     
     // Die ersten 10 Treffer für den initialen Render holen
     const result = await this.iterator.next();
@@ -33,7 +33,7 @@ export default class SearchView extends AbstractView {
         <button class="back-btn" id="search-back">⬅ Zurück zum Zufallsrezept</button>
         <h3>Suchergebnisse für "${query}"</h3>
         
-        <div class="results-list">${listItems}</div>
+        <div class="gallery">${listItems}</div>
         
         <div id="infinite-scroll-trigger"></div>
         
@@ -45,12 +45,14 @@ export default class SearchView extends AbstractView {
   // Hilfsmethode: Erzeugt die HTML-Strings für die Rezeptlinks
   _generateResultsListHtml(items) {
     return items.map((recipeData, index) => {
-      const service = new URL(recipeData.link).host;
+      // const recipeHost = new URL(recipeData.link).host;
       recipeData.typeface || (recipeData.typeface = getRandomTypeface(recipeData
     .title));
       recipeData.color || (recipeData.color = getRandomColor());
-      return recipeteaser(item, index).join("")
-    });
+      recipeData.image && (recipeData.teaserImage = recipeData.image);
+      return `
+      <div class="gallery-item">${recipeTeaser(recipeData, index)}</div>`
+    }).join("");
   }
 
   // Wird aufgerufen, sobald das HTML im sichtbaren Container (#background) liegt

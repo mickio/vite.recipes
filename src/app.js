@@ -1,6 +1,7 @@
 import RecipeCache from "./services/recipeCache.js";
 import RecipeProxy from "./services/recipeProxy.js";
 import { router } from "./router.js";
+import "./services/transition.js"
 
 // Global verfügbare Proxy-Instanz aufbauen
 const cache = new RecipeCache();

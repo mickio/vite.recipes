@@ -20,8 +20,8 @@ export default class HomeView extends AbstractView {
     return `
       <div class="view-home">
         <span class="badge">Zufallsrezept</span>
-        <h2>${recipe.details.title || 'Rezept des Tages'}</h2>
-        <div>${recipe.details.content}</div>
+        <h2>${recipe.result.title || 'Rezept des Tages'}</h2>
+        <div>${recipe.result.content}</div>
       </div>
     `;
   }

@@ -1,0 +1,456 @@
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background-color: #f4f4f9;
+}
+
+#btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  position: fixed;
+}
+
+/* Der Hauptcontainer hält beide Ebenen */
+main {
+  position: relative;
+  width: 100%;
+  /*max-width: 600px;*/
+  height: 100vh;
+  overflow: hidden;
+  /*border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
+}
+
+#background, #front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /*padding: 20px;*/
+  overflow-y: auto; /* Erlaubt Scrollen, falls das Rezept lang ist */
+}
+
+/* Initialer Zustand: Blau und zentriert */
+#background.initial {
+  background-color: #0056b3;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Standardzustand für das Background-Div nach dem Austausch */
+#background {
+  background-color: white;
+  color: #333;
+  display: block; /* Hebt das Flexbox-Centering auf */
+}
+
+/* Das Front-Div wartet unsichtbar auf der rechten Seite */
+#front {
+  background-color: white;
+  color: #333;
+  transform: translateX(100%);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 10;
+}
+
+/* Diese Klasse aktiviert das Reinschieben */
+#front.slide-in {
+  transform: translateX(0);
+}
+/* Styling für das Endless Scrolling */
+#infinite-scroll-trigger {
+  height: 1px;
+  /* Minimal hoch, damit der Observer anschlägt */
+  width: 100%;
+  background: transparent;
+}
+
+#search-loading {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Hilfsklasse zum Ein-/Ausblenden */
+.hidden {
+  display: none !important;
+}
+
+.no-results {
+  color: #999;
+  font-style: italic;
+}
+/* Styling für das Endless Scrolling */
+#infinite-scroll-trigger {
+  height: 1px; /* Minimal hoch, damit der Observer anschlägt */
+  width: 100%;
+  background: transparent;
+}
+
+#search-loading {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Hilfsklasse zum Ein-/Ausblenden */
+.hidden {
+  display: none !important;
+}
+
+.no-results {
+  color: #999;
+  font-style: italic;
+}
+
+/* G A L E R Y */
+  .observed {
+    position: relative;
+    height: 40px;
+    margin:10px;
+  } 
+  .observed button {
+    background-color: #6b5b955c;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    line-height: 40px;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .observed button:hover {
+    background-color: var(--purple);
+  }
+  .observed button:active {
+    background-color: #4019a3;
+  }
+  .observed button:nth-child(2) {
+    /* Wenn button 2. Element im container (Wenn Loading, dann 2.), button ausblenden */
+    display: none;
+  }
+	.gallery {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+		align-items: stretch;
+	}
+	
+/* R E C I P E  T E A S E R */
+	.gallery-item {
+		flex: 1 1 ;
+		max-width: 500px;
+		min-width: 360px;
+		/* max-height: 100vh; */
+	}
+	.gallery-item article {
+		display: flex;
+		flex-direction: column;
+	}
+	figcaption > a {
+		margin: 20px;
+		display: block;
+		text-decoration: none;
+		color: aliceblue;
+		font-size: 24px;
+		font-style: oblique;
+		text-shadow: 2px 2px 50px black,1px 1px 5px blue;	
+	}
+	figcaption > a:hover {
+		text-shadow: 2px 2px 50px black,1px 1px 5px red;
+		font-style: normal;
+	}
+	figcaption > a::after {
+		font-family: 'Material Icons';
+		content: 'launch';
+	}
+	.gallery-item h1 > a {
+		font-size: inherit;
+		font-family: inherit;
+		background-color: inherit;
+		text-decoration: none;
+		border: none;
+		color: inherit;
+		cursor: pointer;
+		padding: 1px 4px;
+	}
+	.gallery-item h1 > a:hover {
+		font-style: oblique;
+		text-decoration: underline white;
+	}
+	.gallery-item h1 > a:active {
+		color:whitesmoke;
+		font-style: normal;
+		text-decoration: none;
+	}
+.gallery-item figure {
+		width:100%;
+		min-height: 200px;
+		margin: 0 0 -7px 0;
+		position: relative;
+		overflow: hidden;
+	}
+	figcaption {
+		width: max-content;
+		bottom: 0;
+		position: absolute;
+	}
+	.gallery-item h1 {
+		text-align: center;
+		font-size: 36px;
+		line-height: 48px;	
+		color: white;	
+		flex: 1 1 auto;
+		padding: 35px 35px 0 35px;
+	}
+	.gallery-item p {
+		font-size: 15px;
+		line-height: 20px;
+		color: white;
+		flex: 1 1 auto;
+		padding: 0 35px;
+	}
+	.gallery-item img {
+		object-fit: cover;
+		width: 100%;
+		min-height: 200px;
+	}
+	.gallery-item .info-box {
+		display: flex;
+	  	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+               "Helvetica Neue", sans-serif;
+		color: aliceblue;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		max-width: 100%;
+		padding: 20px;
+	}
+	.gallery-item .info-box div {
+		flex: 0 0 auto;
+		margin-right: 20px
+	}
+	.gallery-item .info-box h2{
+		font-size: x-small;
+		font-variant: small-caps;
+		margin: 0;
+		line-height: 10px;
+		text-align: left;
+	}
+	/* R E C I P E  D E T A I L S  styles */
+	.recipe-details button {
+		background: none;
+		border: none;
+		font-family: "Material Icons";
+		font-size: 36px;
+		color: red;
+		position: absolute;
+		bottom: 30px;
+		right: 30px;
+		content: "favorite";
+		width:40px;
+		cursor: pointer;
+	}
+	.pdf-button {
+		right: 80px; /* Position next to the favorite button */
+		color: white;
+		text-shadow: 1px 1px 5px black;
+	}
+	.recipe-details article {
+		scrollbar-width: thin;
+		background-color: white;
+		width: 100%;
+		overflow-y: scroll;
+		/* scroll-snap-type: y mandatory; */
+	    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+               "Helvetica Neue", sans-serif;
+	}
+    .recipe-details div {
+        background-color: white;
+    }
+	.recipe-details figure {
+		/* scroll-snap-align: start; */
+		width:100%;
+		max-height: 50vh;
+		margin: 0 0 -7px 0;
+		position: relative;
+		overflow: hidden;
+		/* z-index: -1; */
+		/* top: -46px; */
+		min-height: 200px;
+	}
+	.recipe-details img {
+		object-fit: cover;
+		/* object-position: center; */
+		width: 100%;
+		min-height: 100%;
+	}
+	.recipe-details .navbar-item {
+		position: absolute;
+		top: 70%;
+		right: 40px;
+		cursor: pointer;
+	}
+	.material-icons {
+		font-size: 48px;
+		color: red;
+		text-shadow: 2px 2px 20px rgb(139, 1, 1);
+	}
+.recipe-details section {
+		padding: 0 30px 30px 30px;
+		position: relative;
+		/* scroll-snap-align: start; */
+	}
+.recipe-details h1 {
+		font-size: 60px;
+		line-height: 80px;	
+		text-align: center;
+	}
+.recipe-details p {
+		font-size: 15px;
+		line-height: 20px;
+		flex: 1 1 auto;
+	}
+	.recipe-details .info-box {
+		display: flex;
+		padding-bottom: 15px;
+		flex-wrap: wrap;
+		max-width: 100%;
+	}
+	.recipe-details .info-box div {
+		flex: 0 0 auto;
+		margin-right: 20px
+	}
+	.recipe-details .info-box h2{
+		font-size: x-small;
+		font-variant: small-caps;
+		margin: 0;
+		line-height: 10px;
+		text-align: left;
+	}
+	/* Ingredients and instructions */
+	.recipe-details .content {
+		columns: 360px;
+		/* max-height: 100vh; */
+		overflow-y: scroll;
+	}
+	.ingredients {
+		scroll-snap-align: start;
+		width: 70%;
+		margin-left: 2em;
+		margin-top: 0.5em;
+		padding: 1em 40px;
+		background-color: var(--yellow);
+    font-variant: small-caps;
+		margin-bottom: 30px;
+		break-inside: avoid-column;
+		display: inline-block;
+  }
+	.ingredients>p {
+		font-size: 18px;
+		margin: 9px 0;
+		display: block;
+		padding-bottom: 9px;
+		border-bottom: 1px solid #c0872b;
+	}
+	.ingredients>p:first-child{
+		margin-top: 9px;
+	}
+	.ingredients>p:last-child{
+		border: none
+	}
+	.instructions {
+		padding: 0 20px;
+		position: relative;
+		scroll-snap-align: start;
+  }
+	.instruction {
+		scroll-snap-align: start;
+		font-size: 20px;
+		line-height: 30px;
+		padding: 0 2em 2em 2em;
+		counter-increment: par-counter;
+		break-inside: avoid-column;
+		display: inline-block;
+	}
+	.instruction::before {
+		content: counter(par-counter);
+		display: inline-block;
+		margin: 0 25px 0 -25px;
+		vertical-align: 10px;
+		padding-bottom: 5px;
+		font-size: 200%;
+	}
+	@media screen and (min-width: 480px) {
+		.is-float-left-tablet {
+			float: left;
+		}
+	}
+	@media screen and (max-width: 480px) {
+.recipe-details article {
+			scroll-snap-type: unset;
+		}
+		.recipe-details .content{
+			max-height: unset;
+		}
+		.ingredients {
+			margin:0;
+			width: calc(100% - 80px);
+		}
+		.instructions {
+			columns: unset;
+			padding: unset;
+			/* min-height: 100vh; */
+		}
+		.instruction {
+			max-height: 100vh;
+			/* overflow-y: scroll; */
+			scroll-snap-align: start;
+			padding: unset;
+		}
+		.instruction::before{
+			margin: 0 25px 0 0px;
+		}
+		/* .is-flex-column-scroll-snap-mobile {
+			overflow-x: scroll;
+			scroll-snap-type: x mandatory;
+			display: flex;
+			column-gap: 40px;
+		} */
+		/* .is-flexbox-scroll-snap-mobile {
+			flex: 0 0 100%;
+			width: 100vw;
+			padding:0;
+			scroll-snap-align: end;
+			display: inline-block;
+		} */
+		.is-smaller-mobile {
+			font-size: 40px;
+			line-height: 60px;
+		}
+	}
+	@media screen and (min-width: 1408px) {
+		.instruction {
+			font-size: 24px;
+			line-height: 40px;
+		}
+	.recipe-details .content {
+		columns: 620px;
+		}
+	}

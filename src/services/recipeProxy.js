@@ -10,11 +10,10 @@ export default class RecipeProxy {
 
   // Hilfsmethode zur Validierung der Payload-Struktur
   _isValidResponse(data) {
+    console.log('[recipeProxy][_isValidResponse] führe plausi check durch:',data);
     return (
       data && 
-      data.details && 
-      typeof data.details === 'object' && 
-      !Array.isArray(data.details) // Sicherstellen, dass es kein Array ist
+      data.result // Sicherstellen, dass es kein Array ist
     );
   }
 
@@ -40,7 +39,7 @@ export default class RecipeProxy {
 
     const data = await response.json();
 
-    // NEU: Nur cachen, wenn details existiert und ein Objekt ist
+    // NEU: Nur cachen, wenn result existiert und ein Objekt ist
     if (this._isValidResponse(data)) {
       return this.cache.saveRecipe(data, url);
     } else {
@@ -61,7 +60,7 @@ export default class RecipeProxy {
 
     const data = await response.json();
 
-    // NEU: Nur cachen, wenn details ein gültiges Objekt ist
+    // NEU: Nur cachen, wenn result ein gültiges Objekt ist
     if (this._isValidResponse(data)) {
       return this.cache.saveRecipe(data);
     } else {
@@ -70,11 +69,12 @@ export default class RecipeProxy {
     }
   }
 
-  // 3. Endpoint: search (unverändert)
+  // 3. Endpoint: search
   searchIterator(query, pageSize = 10) {
     const baseUrl = this.baseUrl;
     const proxy = this; // Referenz auf den Proxy
     let currentStart = 1;
+    let currentResultLength = 100;
 
     // Falls eine NEUE Suche gestartet wird, den Cache zurücksetzen
     if (proxy.searchCache.query !== query) {
@@ -94,8 +94,8 @@ export default class RecipeProxy {
         
         // Wir geben ALLE gecachten Items auf einmal zurück!
         return {
-          value: { details: { content: proxy.searchCache.items } },
-          done: false
+          value: { result: { content: proxy.searchCache.items } },
+          done: currentResultLength <=  currentStart
         };
       }
 
@@ -109,8 +109,9 @@ export default class RecipeProxy {
             return { value: null, done: true };
 
           const data = await response.json();
+          currentResultLength = Math.min(data.resultLength,currentResultLength);
           const hasResults = data && data.result && Array.isArray(data.result) && data.result.length > 0;
-console.log(data,hasResults)
+
           if (!hasResults) {
             return { value: null, done: true };
           }
@@ -122,7 +123,7 @@ console.log(data,hasResults)
 
           return {
             value: data,
-            done: false
+            done:  currentResultLength <=  currentStart
           };
         } catch (error) {
           console.error("Fehler im Search-Iterator:", error);

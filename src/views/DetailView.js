@@ -1,6 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import recipeDetails from '../templates/recipeDetails.js';
-import { proxy } from "../app.js";
+import { proxy } from "../services/recipeProxy.js";
 
 export default class DetailView extends AbstractView {
   async getHtml() {
@@ -8,12 +8,12 @@ export default class DetailView extends AbstractView {
     const url = this.params.url;
     const fullRecipe = await proxy.getDetails(title, url);
     const recipe = {...this.params,...fullRecipe.result}
-    console.log('DetailView gets:',recipe)
+    console.log('DetailView gets:',recipe,this.params)
     return `
-      <div class="recipe-details">
+      <transition-container data-params={"enter":{"name":"slide-right"},"leave":{"name":"slide-left"}}  class="recipe-details">
         <button class="back-btn" id="detail-back">⬅ Zurück zur Suche</button>
         ${recipeDetails(recipe)}
-      </div>
+      </transition-container>
     `;
   }
 

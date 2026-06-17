@@ -63,7 +63,7 @@
 	}
 
 	function replaceImage() {
-		recipeData.image = recipeData.teaserImage;
+		recipeData.image = recipeData.thumbnail.src;
 	}
 
 	const blinkButtonMerklisteAndStoreMerkliste = _ => {
@@ -93,12 +93,12 @@
 `}
 */
 
-export default (recipeData) => `<article class=${recipeData.color}>
+export default (recipeData) => `<article>
     <figure>
-        <img ${recipeData.images?.src?`src="${recipeData.images.src}"`:recipeData.images?.srcset?`srcset="${recipeData.image.srcset}"`:`src="${recipeData.teaserImage}"`} alt=${recipeData.title??'Ohne Titel'}>
-        <caption>
-			<a href=${recipeData.link??''}><b>${recipeData.recipeHost}</b></a>
-		</caption>
+        <img ${recipeData.image?.src?`src="${recipeData.image.src}"`:recipeData.image?.srcset?`srcset="${recipeData.image.srcset}"`:`src="${recipeData.thumbnail || ''}"`} alt=${recipeData.title??'Ohne Titel'}>
+        <figcaption>
+			<a href="${recipeData.url??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipeData.url).host}</b></a>
+		</figcaption>
     </figure>
     <section class=${recipeData.typeface}>
         <h1 class="is-smaller-mobile">${recipeData.title??''}</h1>
@@ -121,20 +121,20 @@ export default (recipeData) => `<article class=${recipeData.color}>
                     <span> <small>${recipeData.totalTime}</small></span>
                 </div>
             `:''}
-            ${recipeData.yields ?`
+            ${recipeData.recipeYield ?`
                 <div>
                     <h2>Portionen</h2>
-                    <span><small>${recipeData.yields}</small></span>
+                    <span><small>${recipeData.recipeYield}</small></span>
                 </div>
             `:''}
         </div>
         <div class="content">
             ${recipeData.ingredients?.length ? `
-                <page-transition class="ingredients" data-name="slide-left" data-type="enter">
+                <transition-container class="ingredients" data-transition="slide-left">
                     ${recipeData.ingredients.map( ingredient => 
                         `<p>${ingredient}</p>`).join('')
                     }
-                </page-transition>
+                </transition-container>
             `:''}
             ${recipeData.instructions?.length ? `
                 <div class="instructions is-flex-column-scroll-snap-mobile">

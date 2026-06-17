@@ -25,8 +25,9 @@ const routes = [
 
 class Router {
   constructor() {
-    this.background = document.getElementById("background");
-    this.front = document.getElementById("front");
+    this.main = document.querySelector('main');
+    this.background = () => this.main.firstElementChild;
+    this.front = () => this.main.lastElementChild;
     this.currentViewInstance = null;
 
     // Fängt Klicks auf "data-link" Elemente ab
@@ -38,70 +39,49 @@ class Router {
     });
 
     // Reagiert auf die Back/Forward Buttons des Browsers
-    window.addEventListener("popstate", () => this.route());
+    window.addEventListener("popstate", () => this.route({...history.state,$BACK:true}));
   }
 
-  navigateTo(url,params) {
+  navigateTo(url) {
     // Vor dem Verlassen die aktuelle Scrollposition im History-State speichern
     if (history.state) {
-      history.replaceState({ ...history.state, scrollTop: this.background.scrollTop }, "");
+      history.replaceState({ ...history.state, scrollTop: this.background().scrollTop }, "");
     }
     history.pushState({ scrollTop: 0 }, "", url);
-    this.route(params);
+    this.route();
+    console.log('[router][navigateTo] navigate to',url)
   }
 
-  async route(extParams={}) {
+  async route(state={}) {
     const path = window.location.pathname;
     const currentRoute = routes.find((route) => path.match(route.path));
-    console.log(`[router] current view for path ${path} is ${currentRoute?.viewCls.name}`);
+    console.log(`[router][route] current view for path ${path} is ${currentRoute?.viewCls.name}`,state);
     const ViewClass = currentRoute?.viewCls || HomeView;
     
     // Instanziiere die neue View (übergibt Suchparameter aus der URL)
     const urlParams = new URLSearchParams(window.location.search);
-    const params = {...Object.fromEntries(urlParams.entries()),...extParams}
+    const params = {...Object.fromEntries(urlParams.entries()),state};
     this.currentViewInstance = new ViewClass(params);
 
-    // 1. Inhalt unsichtbar im Front-Div rendern
-    this.front.innerHTML = await this.currentViewInstance.getHtml();
-    
+    // Inhalt einfügen und alten node entfernen
+    const prevPage = this.background();
+    const currentPage = document.createElement('div');
+    currentPage.classList.add('floating');
+    if (state.$BACK)
+      this.main.prepend(currentPage);
+    else
+      this.main.append(currentPage);
+    currentPage.innerHTML = await this.currentViewInstance.getHtml();
+    console.log('[router][route] removing previous page',prevPage.tagName);
+    const tc = prevPage.querySelector('transition-container');
+    if (tc)
+      tc.remove().then(() => prevPage?.remove()).then(() => console.log('[router][route] removed previous page',prevPage.tagName));
+    else prevPage.remove()?.then(() => console.log('[router][route] removed previous page',prevPage.tagName));
     // Nachträgliche Logik der View (z.B. Event-Listener binden) ausführen
-    if (this.currentViewInstance.afterRender) {
-      this.currentViewInstance.afterRender(this.front);
-    }
+    if (this.currentViewInstance.afterRender) 
+      this.currentViewInstance.afterRender(currentPage);
+  };
 
-    // 2. Schiebe-Animation starten
-    this.front.classList.add("slide-in");
-    // this.front.dataset.type = 'enter';
-
-    const handleTransitionEnd = (event) => {
-      console.log('[handleTransition]',event)
-      if (event.propertyName === "transform") {
-        this.front.removeEventListener("transitionend", handleTransitionEnd);
-
-        // 3. Inhalt umhängen
-        this.background.firstElementChild?this.background.replaceChild(this.front.firstElementChild,this.background.firstElementChild) : this.background.appendChild(this.front.firstElementChild);
-        this.background.classList.remove("initial");
-
-        // Event-Listener für das frisch umgehängte Background-Div reaktivieren
-        if (this.currentViewInstance.afterRender) {
-          this.currentViewInstance.afterRender(this.background);
-        }
-
-        // 4. Scroll-Position wiederherstellen (falls wir "zurück" gegangen sind)
-        const savedScroll = history.state?.scrollTop || 0;
-        this.background.scrollTop = savedScroll;
-
-        // 5. Front-Div heimlich zurücksetzen
-        this.front.style.transition = "none";
-        this.front.classList.remove("slide-in");
-        this.front.innerHTML = "";
-        this.front.offsetHeight; // Reflow
-        this.front.style.transition = "";
-      }
-    };
-
-    this.front.addEventListener("transitionend", handleTransitionEnd);
-  }
 }
 
 export const router = new Router();

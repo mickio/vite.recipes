@@ -1,16 +1,18 @@
 export default (recipeData,index) => `
-<article class="${recipeData.color}" data-index="${index??0}">
+<article class="${recipeData.color}" data-index="${index??0}"> 
+	<!--transition-container data-prevent-default data-transition="enlarge" style="height:fit-content;"-->
 	<figure>
-		<img src=${recipeData.image} alt=${recipeData.title}>
+		<img src=${recipeData.thumbnail?.src} alt=${recipeData.title}>
 		<figcaption>
-			<a href=${recipeData.link}>
+			<a href="${recipeData.link|'#'}" target="_blank" rel="noopener noreferrer">
 				<b>${new URL(recipeData.link).host}</b>
 			</a> 
 		</figcaption>
 	</figure>
+	<!--/transition-container-->
 	<div style="flex-grow: 6"></div>
 	<div class="content ${recipeData.typeface}">
-		<h1><a href="/details/${recipeData.title??'Ohne Titel'}?url=${recipeData.link}&title=${recipeData.title??'Ohne Titel'}" data-link>${recipeData.title??'Ohne Titel'}</a></h1>
+		<h1><a href="/details/${encodeURIComponent(recipeData.title??'Ohne Titel')}?url=${recipeData.link}&color=${recipeData.color}&typeface=${encodeURIComponent(recipeData.typeface)}&thumbnail=${recipeData.thumbnail?.src ??''}&title=${encodeURIComponent(recipeData.title)}" data-link>${recipeData.title??'Ohne Titel'}</a></h1>
 	</div>
 	<div style="flex-grow: 1"></div>
 	<div class="${recipeData.typeface}">

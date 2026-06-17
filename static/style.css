@@ -1,11 +1,4 @@
-
-body {
-  font-family: sans-serif;
-  margin: 0;
-  background-color: #f4f4f9;
-}
-
-#btn {
+btn {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -19,12 +12,15 @@ main {
   width: 100%;
   /*max-width: 600px;*/
   height: 100vh;
-  overflow: hidden;
+  /*overflow: hidden;*/
+  overflow: scroll;
   /*border: 1px solid #ccc;
   background-color: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
 }
-
+.floating {
+	position:absolute;
+}
 #background, #front {
   position: absolute;
   top: 0;
@@ -201,6 +197,7 @@ main {
 .gallery-item figure {
 		width:100%;
 		min-height: 200px;
+		max-height: 50vh;
 		margin: 0 0 -7px 0;
 		position: relative;
 		overflow: hidden;
@@ -271,6 +268,7 @@ main {
 		color: white;
 		text-shadow: 1px 1px 5px black;
 	}
+	.inspiration article,
 	.recipe-details article {
 		scrollbar-width: thin;
 		background-color: white;
@@ -281,10 +279,11 @@ main {
                Roboto, Oxygen-Sans, Ubuntu, Cantarell,
                "Helvetica Neue", sans-serif;
 	}
+	.inspiration div 
     .recipe-details div {
         background-color: white;
     }
-	.recipe-details figure {
+	.recipe-details figure, .inspiration figure {
 		/* scroll-snap-align: start; */
 		width:100%;
 		max-height: 50vh;
@@ -295,7 +294,7 @@ main {
 		/* top: -46px; */
 		min-height: 200px;
 	}
-	.recipe-details img {
+	.recipe-details img, .inspiration img, .inspiration iframe {
 		object-fit: cover;
 		/* object-position: center; */
 		width: 100%;
@@ -312,16 +311,19 @@ main {
 		color: red;
 		text-shadow: 2px 2px 20px rgb(139, 1, 1);
 	}
+.inspiration section,
 .recipe-details section {
 		padding: 0 30px 30px 30px;
 		position: relative;
 		/* scroll-snap-align: start; */
 	}
+.inspiration h1,
 .recipe-details h1 {
 		font-size: 60px;
 		line-height: 80px;	
 		text-align: center;
 	}
+.inspiration p,
 .recipe-details p {
 		font-size: 15px;
 		line-height: 20px;
@@ -345,6 +347,7 @@ main {
 		text-align: left;
 	}
 	/* Ingredients and instructions */
+	.inspiration .content,
 	.recipe-details .content {
 		columns: 360px;
 		/* max-height: 100vh; */
@@ -406,6 +409,7 @@ main {
 .recipe-details article {
 			scroll-snap-type: unset;
 		}
+		.inspiration .content,
 		.recipe-details .content{
 			max-height: unset;
 		}
@@ -450,7 +454,32 @@ main {
 			font-size: 24px;
 			line-height: 40px;
 		}
+	.inspiration .content,
 	.recipe-details .content {
 		columns: 620px;
 		}
 	}
+	
+/* K O C H G E N O S S E N */
+    .inspiration {
+        background-color: white;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100vw;
+        overflow-y: auto;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+               "Helvetica Neue", sans-serif;
+    }
+    .inspiration article {
+        padding: 30px;
+        box-sizing: border-box;
+    }
+    .inspiration p:has(a,img) {
+        max-height: 20vh;
+        overflow-x: auto;
+    }
+    .inspiration p IMG {
+        max-width: none !important;
+        width: auto;
+    }

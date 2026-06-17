@@ -1,14 +1,10 @@
-import RecipeCache from "./services/recipeCache.js";
-import RecipeProxy from "./services/recipeProxy.js";
 import { router } from "./router.js";
-import "./services/transition.js"
+import "./services/transition.js";
 
-// Global verfügbare Proxy-Instanz aufbauen
-const cache = new RecipeCache();
-export const proxy = new RecipeProxy("http://127.0.0.1:5000/api", cache);
-
-document.addEventListener("DOMContentLoaded", () => {
+const ondocloaded = () => {
+  document.removeEventListener("DOMContentLoaded",ondocloaded)
   // 1. Router das erste Mal anwerfen
+  console.log('[app.js] DOM content loaded, call for routing')
   router.route();
 
   // 2. Zufalls-Button (Refresh) oben links fängt Klicks ab
@@ -25,4 +21,5 @@ document.addEventListener("DOMContentLoaded", () => {
       router.navigateTo(`/search?q=${encodeURIComponent(query)}`);
     }
   });
-});
+};
+document.addEventListener("DOMContentLoaded", ondocloaded, { once: true });

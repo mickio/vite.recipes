@@ -1,4 +1,7 @@
-export default class RecipeProxy {
+import RecipeCache from './recipeCache.js';
+const CSE_PAGINATION_START = 0;
+
+class RecipeProxy {
   constructor(baseUrl = 'http://127.0.0.1:5000/api', cacheInstance = new RecipeCache()) {
     this.baseUrl = baseUrl;
     this.cache = cacheInstance;
@@ -73,20 +76,21 @@ export default class RecipeProxy {
   searchIterator(query, pageSize = 10) {
     const baseUrl = this.baseUrl;
     const proxy = this; // Referenz auf den Proxy
-    let currentStart = 1;
+    let currentStart = CSE_PAGINATION_START;
     let currentResultLength = 100;
 
     // Falls eine NEUE Suche gestartet wird, den Cache zurücksetzen
+    console.log(`[RecipeProxy][searchIterator] currentStart = ${currentStart}!, query is "${query}", length items is "${proxy.searchCache.items.length}`)
     if (proxy.searchCache.query !== query) {
       proxy.searchCache.query = query;
       proxy.searchCache.items = [];
-      currentStart = 1;
+      currentStart = CSE_PAGINATION_START;
     }
 
     return {
       async next() {
-        // Fall 1: Sind wir ganz am Anfang (currentStart === 0) UND haben bereits Daten im Cache?
-      if (currentStart === 0 && proxy.searchCache.items.length > 0) {
+        // Fall 1: Sind wir ganz am Anfang (currentStart === CSE_PAGINATION_START) UND haben bereits Daten im Cache?
+      if (currentStart === CSE_PAGINATION_START && proxy.searchCache.items.length > CSE_PAGINATION_START) {
         console.log(`🎯 Proxy: Bediene initialen Render komplett aus dem Cache (${proxy.searchCache.items.length} Treffer)`);
         
         // Wir setzen den Zeiger sofort ans Ende des bisherigen Caches
@@ -94,8 +98,8 @@ export default class RecipeProxy {
         
         // Wir geben ALLE gecachten Items auf einmal zurück!
         return {
-          value: { result: { content: proxy.searchCache.items } },
-          done: currentResultLength <=  currentStart
+          value: { result: proxy.searchCache.items },
+          done: currentResultLength <  currentStart
         };
       }
 
@@ -105,8 +109,10 @@ export default class RecipeProxy {
         
         try {
           const response = await fetch(apiUrl);
-          if (!response.ok) 
+          if (!response.ok) {
+            console.error(`[RecipeProxy][searchIterator.next] Server Fehler: ${await response.json()}`);
             return { value: null, done: true };
+          }
 
           const data = await response.json();
           currentResultLength = Math.min(data.resultLength,currentResultLength);
@@ -126,10 +132,11 @@ export default class RecipeProxy {
             done:  currentResultLength <=  currentStart
           };
         } catch (error) {
-          console.error("Fehler im Search-Iterator:", error);
+          console.error("[RecipeProxy][searchIterator.next] Fehler im Search-Iterator:", error);
           return { value: null, done: true };
         }
       }
     };
   }
 }
+export const proxy = new RecipeProxy("http://127.0.0.1:5000/api", new RecipeCache());

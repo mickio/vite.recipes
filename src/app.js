@@ -14,7 +14,7 @@ const ondocloaded = async () => {
   navbar.classList.remove('is-hidden');
   navbar.show();
   
-  // 3. linker-Button
+  // 3. linker Button (refresh oder back)
   const refreshOrBack = document.getElementById("btn-refresh-or-back")
   refreshOrBack.closest('form').addEventListener("submit", (evt) => {
     evt.preventDefault();

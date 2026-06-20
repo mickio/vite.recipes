@@ -1,24 +1,33 @@
 import { router } from "./router.js";
 import "./services/transition.js";
 
-const ondocloaded = () => {
-  document.removeEventListener("DOMContentLoaded",ondocloaded)
+const ondocloaded = async () => {
+  document.removeEventListener("DOMContentLoaded",ondocloaded);
+  
   // 1. Router das erste Mal anwerfen
-  console.log('[app.js] DOM content loaded, call for routing')
-  router.route();
-
-  // 2. Zufalls-Button (Refresh) oben links fängt Klicks ab
-  document.getElementById("btn-refresh").addEventListener("click", () => {
-    // Erzwingt das Löschen des Parameters, um ein echtes neues Zufallsrezept zu triggern
+  console.log('[app.js] DOM content loaded, call for routing');
+  const initCompleted = router.route();
+  
+  // navbar aufklappen
+  const navbar = document.getElementById('navbar');
+  await initCompleted;
+  navbar.classList.remove('is-hidden');
+  navbar.show();
+  
+  // 3. linker-Button
+  const refreshOrBack = document.getElementById("btn-refresh-or-back")
+  refreshOrBack.closest('form').addEventListener("submit", (evt) => {
+    evt.preventDefault();
     router.navigateTo("/");
   });
 
-  // 3. Das Suchfeld in der Kopfzeile kontrollieren
+  // 4. Das Suchfeld in der Kopfzeile kontrollieren
   document.getElementById("search-form").addEventListener("submit", e => {
     e.preventDefault();
     const query = document.getElementById("search-input").value.trim();
     if (query) {
       router.navigateTo(`/search?q=${encodeURIComponent(query)}`);
+      refreshOrBack.value="west"
     }
   });
 };

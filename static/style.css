@@ -1,11 +1,3 @@
-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 15px;
-  position: fixed;
-}
-
 /* Der Hauptcontainer hält beide Ebenen */
 main {
   position: relative;
@@ -58,24 +50,12 @@ main {
   z-index: 10;
 }
 
-/* Diese Klasse aktiviert das Reinschieben */
-#front.slide-in {
-  transform: translateX(0);
-}
 /* Styling für das Endless Scrolling */
 #infinite-scroll-trigger {
   height: 1px;
   /* Minimal hoch, damit der Observer anschlägt */
   width: 100%;
   background: transparent;
-}
-
-#search-loading {
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  color: #666;
-  font-style: italic;
 }
 
 /* Hilfsklasse zum Ein-/Ausblenden */
@@ -100,11 +80,6 @@ main {
   font-size: 14px;
   color: #666;
   font-style: italic;
-}
-
-/* Hilfsklasse zum Ein-/Ausblenden */
-.hidden {
-  display: none !important;
 }
 
 .no-results {
@@ -483,3 +458,94 @@ main {
         max-width: none !important;
         width: auto;
     }
+  
+  
+  /* Die navbar */
+    form.search-container {
+        position: relative;
+        display: flex;
+        align-content: center;
+    }
+    form.search-container:hover input[type=search], form.search-container input[type=search]:focus{
+        width: 250px;
+        outline: var(--brick-red) solid 1.5px;
+        transition: all 0.5s ease-in-out;
+        font-size: large;
+    }
+    .search-container input[type=search] {
+        background-color: hsla(120,1%,10%,0.5);
+        border-bottom-left-radius: 25px;
+        border-top-left-radius: 25px;
+        margin: unset;
+        border-style: none;
+        outline: 1.5px solid hsla(120,1%,10%,0.5);
+        color: white;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        padding: 15px;
+        width: 100px;
+        transition: all 0.5s ease-in-out;
+    }
+
+    /* Für das aufblähen des Merkliste Icon */
+    .blink {
+        /* font-size: 40px !important;
+        border-radius: 50px !important;
+        line-height: 40px !important; */
+        transition: all .1s ease-in;
+        background-color: white !important;
+        color: black !important;
+        }
+
+    /* Für das close icon */
+    icon {
+        position: absolute;
+        color: white;
+        font-family: "Material Icons";
+        top: 15px;
+        right: 60px;
+        font-size: large;
+        cursor: pointer;
+    }
+    nav input[type=submit] {
+        padding: 15px;
+        border: unset;
+        border-radius: 25px;
+        outline: var(--brick-red) solid 1.5px;
+        font-family: 'Material Icons';
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 20px;
+        color: white;
+        background-color: var(--brick-red);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        transition: background-color 0.2s ease-in-out;
+        transition: all .1s ease-in;
+    }
+    nav input[type=submit]:hover {
+        background-color: var(--orange);
+        transition: background-color 0.2s ease-in-out;
+    }
+    nav input[type=submit]:active {
+        background-color: var(--green);
+        transition: background-color 0.5s ease-in-out;
+    }
+    .search-container input[type=submit] {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;    
+    }
+    #navbar {
+        position: absolute;
+        top: 0;
+        z-index: 10;
+        width:100vw;
+    }
+  	nav {
+        display: flex;
+        justify-content: space-between;
+        width: calc(100% - 80px);
+        /* top: 40px; */
+        margin: 40px auto;
+        left: 40px;
+        right: 40px;
+    }  
+    /* Ende navbar */

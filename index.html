@@ -7,27 +7,41 @@
   <title>Rezept SPA</title>
   <link rel="stylesheet" href="static/basic-style.css">
   <link rel="stylesheet" href="static/style.css">
+  <script type="module" src="src/app.js"></script>
 </head>
+
+
 <body>
-
-  <header>
-    <button id="btn-refresh" type="button">Zufall</button>
-    <form id="search-form">
-      <input type="text" id="search-input" placeholder="Rezept suchen..." required>
-      <button type="submit">Suchen</button>
-    </form>
-  </header>
-
+  <transition-container id="navbar" data-transition="slide-down" data-prevent-default class="is-hidden">  
+    <nav class="navbar">
+      <div class="navbar-left">
+        <form class="nav-container">
+          <input id="btn-refresh-or-back" type="submit" value="refresh">
+        </form> 
+      </div>
+      <div class="navbar-center">
+        <form id="search-form" class="search-container">
+          <input id="search-input" name="q" type="search" placeholder="Rezeptname oder Zutaten" required>
+          <icon class="hidden">close</icon>
+          <input type="submit" value="search">
+        </form>
+      </div>
+      <div class="navbar-right">
+        <form>
+          <input class="blink" type="submit" value="list_alt"/>
+        </form>    
+      </div>
+    </nav>
+  </transition-container>
   <main>
-    <transition-container data-params='{"leave":{"name":"fade"}}' data-prevent-default>
-    <div id="background" class="initial">
-      <p style="padding:20px;">
-        Ein zufälliges Rezept von Kochgenossen.at. Eine empfehlenswerte Site für eine hohe Trefferquote ohne aufdringliche Werbung!
-      </p>
-    </div>
+    <transition-container data-params='{"leave":{"name":"fade"}}' data-display-at-start>
+      <div id="background" class="initial">
+        <p style="padding:20px;">
+          Ein zufälliges Rezept von Kochgenossen.at. Eine empfehlenswerte Site für eine hohe Trefferquote ohne aufdringliche Werbung!
+        </p>
+      </div>
     </transition-container>
   </main>
 
-  <script type="module" src="src/app.js"></script>
 </body>
 </html>

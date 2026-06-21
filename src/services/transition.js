@@ -156,7 +156,7 @@ class Transition extends HTMLElement {
     toggleEnter () {
       if (!this.enterName)
         return false;
-      this.transition = this.enterName;
+      this.dataset.transition = this.enterName;
       this.setCSSHostVars(this.enterParams || {});
       this._internals.states.delete('leave')
       this._internals.states.add('enter')
@@ -166,7 +166,7 @@ class Transition extends HTMLElement {
     toggleLeave () {
       if (!this.leaveName)
         return false
-      this.transition = this.leaveName
+      this.dataset.transition = this.leaveName
       this.setCSSHostVars(this.leaveParams || {})
       // console.log('set leave params')
       
@@ -265,11 +265,6 @@ class Transition extends HTMLElement {
           this.leaveParams = params.leave
         }
       } 
-      else if (attName === 'data-transition') {
-        // console.log('setting enterName and leaveName')
-        this.enterName = newValue;
-        this.leaveName = newValue
-      }
     }
     
     setCSSHostVars (opts) {

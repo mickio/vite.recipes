@@ -104,7 +104,7 @@ class Router {
 
     // Vor dem Verlassen die aktuelle Scrollposition im History-State speichern
     if (history.state) {
-      history.replaceState({ ...history.state, scrollTop: this.currentPage().scrollTop }, "");
+      history.replaceState({ ...history.state, scrollTop: this.main.scrollTop }, "");
     }
     history.pushState({ scrollTop: 0 }, "", url);
     
@@ -134,6 +134,10 @@ class Router {
     else
       this.main.append(currentPage);
     currentPage.innerHTML = await this.newPage.getHtml();
+    if (state.$BACK && state.scrollTop) // auf vorige Position scrollen
+      this.main.scrollTop = state.scrollTop;
+    else this.main.scrollTop = 0;
+      
     console.log('[router][route] removing previous page',prevPage.tagName);
     // Falls transition-container, verzögertes remove
     const tc = prevPage.tagName === 'transition-container'

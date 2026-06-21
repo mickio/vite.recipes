@@ -42,7 +42,7 @@ class Router {
     // Reagiert auf die Back/Forward Buttons des Browsers
     window.addEventListener("popstate", (evt) => {
       const aktuelleUrl = location.pathname+location.search;
-      const letzterIndex = this.pageStack.lastIndexOf(aktuelleUrl);
+      const letzterIndex = this.pageStack.slice(0,-1).lastIndexOf(aktuelleUrl);
       // console.log(`[popstate] received at ${aktuelleUrl},p0sition is ${letzterIndex}`,this.pageStack);
 
       // Wenn die URL im Stack existiert UND sie nicht schon die ganz aktuelle ist
@@ -51,16 +51,15 @@ class Router {
         // Wir schneiden alles ab, was nach diesem Index kam
         this.pageStack = this.pageStack.slice(0, letzterIndex + 1);
         this.saveStack();
-        // console.log('[popstate] pageStack ist jetzt',this.pageStack);
+        // console.log('[popstate] kehre zurück zu',aktuelleUrl);
         if (history.state) {
           history.replaceState({ ...history.state, $BACK: true }, "");
         }
-      } else if (letzterIndex === this.pageStack.length - 1) {
-        // Keine Änderung (User ist auf derselben Seite)
       } else {
         // Schritt nach vorne,die URL muss wieder rein
         this.pageStack.push(aktuelleUrl);
         this.saveStack();
+        // console.log('[popstate] gehe vor zu',aktuelleUrl);
         if (history.state) {
           history.replaceState({ ...history.state, $BACK: false }, "");
         }

@@ -26,9 +26,8 @@ const routes = [
 class Router {
   constructor() {
     this.main = document.querySelector('main');
-    this.background = () => this.main.firstElementChild;
-    this.front = () => this.main.lastElementChild;
-    this.currentViewInstance = null;
+    this.currentPage = () => this.main.firstElementChild;
+    this.newPage = null;
     this.pageStack = JSON.parse(sessionStorage.getItem('pageStack')) || [window.location.url];
     this.saveStack();
 
@@ -105,7 +104,7 @@ class Router {
 
     // Vor dem Verlassen die aktuelle Scrollposition im History-State speichern
     if (history.state) {
-      history.replaceState({ ...history.state, scrollTop: this.background().scrollTop }, "");
+      history.replaceState({ ...history.state, scrollTop: this.currentPage().scrollTop }, "");
     }
     history.pushState({ scrollTop: 0 }, "", url);
     
@@ -117,32 +116,36 @@ class Router {
   async route() {
     const path = window.location.pathname;
     const state = history.state || {};
-    const currentRoute = routes.find((route) => path.match(route.path));
-    console.log(`[router][route] current view for path ${path} is ${currentRoute?.viewCls.name}`,state);
-    const ViewClass = currentRoute?.viewCls || HomeView;
+    const newRoute = routes.find((route) => path.match(route.path));
+    console.log(`[router][route] current view for path ${path} is ${newRoute?.viewCls.name}`,state);
+    const ViewClass = newRoute?.viewCls || HomeView;
     
-    // Instanziiere die neue View (übergibt Suchparameter aus der URL)
+    // Instanziiere die neue View
     const urlParams = new URLSearchParams(window.location.search);
     const params = {...Object.fromEntries(urlParams.entries()),state};
-    this.currentViewInstance = new ViewClass(params);
+    this.newPage = new ViewClass(params);
 
     // Inhalt einfügen und alten node entfernen
-    const prevPage = this.background();
+    const prevPage = this.currentPage();
     const currentPage = document.createElement('div');
     currentPage.classList.add('floating');
     if (state.$BACK)
       this.main.prepend(currentPage);
     else
       this.main.append(currentPage);
-    currentPage.innerHTML = await this.currentViewInstance.getHtml();
+    currentPage.innerHTML = await this.newPage.getHtml();
     console.log('[router][route] removing previous page',prevPage.tagName);
-    const tc = prevPage.querySelector('transition-container');
+    // Falls transition-container, verzögertes remove
+    const tc = prevPage.tagName === 'transition-container'
+      ? prevPage
+      : prevPage.querySelector('transition-container');
     if (tc)
       tc.remove().then(() => prevPage?.remove()).then(() => console.log('[router][route] removed previous page',prevPage.tagName));
-    else prevPage.remove()?.then(() => console.log('[router][route] removed previous page',prevPage.tagName));
+    else 
+      prevPage.remove();
     // Nachträgliche Logik der View (z.B. Event-Listener binden) ausführen
-    if (this.currentViewInstance.afterRender) 
-      this.currentViewInstance.afterRender(currentPage);
+    if (this.newPage.afterRender) 
+      this.newPage.afterRender(currentPage);
   };
 
 }

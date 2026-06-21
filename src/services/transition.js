@@ -1,6 +1,6 @@
 const styles = `
 :host {
-    --duration: 5s;
+    --duration: .5s;
     --timing-function: ease-in;
     --box-positionX: 50vw;
     --box-positionY: 50vh;
@@ -180,7 +180,7 @@ class Transition extends HTMLElement {
         return false
        // this.addEventListener('transitionstart',() => console.log('started transition'),{once:true})
       this.toggleStart()
-      console.log(`[transition][${this.id?this.id:''}][run] starting transition`,enterLeave,this.transition);
+      // console.log(`[transition][${this.id?this.id:''}][run] starting transition`,enterLeave,this.transition);
       void this.offsetHeight;// reflow erzwingen...
       this.toggleEnd()
       return true
@@ -233,22 +233,22 @@ class Transition extends HTMLElement {
       this.shadowRoot.innerHTML = '<slot/>';
       // console.log('[connectedCallback] preventDefault ?','preventDefault' in this.dataset);
       if ('preventDefault' in this.dataset)   {
-        console.log(`[transition][connectedCallback] prevent default`)
+        // console.log(`[transition][connectedCallback] prevent default`)
         this._internals.states.add('hidden');
       }
       else if (document.readyState==='complete'){
-        console.log(`[transition][${this.id??''}][connectedCallback] start transition ${this.dataset.params?.enter?.name}...`)
+        // console.log(`[transition][${this.id??''}][connectedCallback] start transition ${this.dataset.params?.enter?.name}...`)
         this.show();
       }
       else {
-        console.log('[transition][connectedCallback] readyState noch nicht complete.');
+        // console.log('[transition][connectedCallback] readyState noch nicht complete.');
         const transition = this;
         document.addEventListener('DOMContentLoaded',transition.show,{once:true})
       }
     }
     
     attributeChangedCallback (attName, oldValue,newValue) {
-      console.log(`att "${attName}" changed from "${oldValue}" to "${newValue}"`)
+      // console.log(`att "${attName}" changed from "${oldValue}" to "${newValue}"`)
       if (attName === 'data-visible-at-start') {
         this.style.setProperty("--visible-at-start","block")
       }
@@ -266,7 +266,7 @@ class Transition extends HTMLElement {
         }
       } 
       else if (attName === 'data-transition') {
-        console.log('setting enterName and leaveName')
+        // console.log('setting enterName and leaveName')
         this.enterName = newValue;
         this.leaveName = newValue
       }
@@ -287,9 +287,9 @@ export const evtTransitionEnd = (tc) => new Promise(resolve => {
     const removeHandler = (evt) => {
     if (evt && evt.target !== tc) return; 
     let timeoutId;
-    console.log('[evtTransitionEnd] catched transitionend')
+    // console.log('[evtTransitionEnd] catched transitionend')
       if (tc.getAnimations().length === 0) {
-        console.log('[evtTransitionEnd] removing evt listeners');
+        // console.log('[evtTransitionEnd] removing evt listeners');
         tc.removeEventListener('transitionend',removeHandler);
         tc.removeEventListener('transitioncancel',removeHandler);
         clearTimeout(timeoutId);

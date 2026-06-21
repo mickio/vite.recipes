@@ -1,6 +1,7 @@
 import AbstractView from "./AbstractView.js";
 import recipeDetails from '../templates/recipeDetails.js';
 import { proxy } from "../services/recipeProxy.js";
+import { router } from '../router.js';
 
 export default class DetailView extends AbstractView {
   async getHtml() {
@@ -18,13 +19,13 @@ export default class DetailView extends AbstractView {
   }
 
   afterRender(container) {
-    const backBtn = container.querySelector("#detail-back");
-    if (backBtn) {
-      backBtn.addEventListener("click", () => {
-        // Nutzt den echten Browser-Verlauf, um die Suchergebnisse + Scroll-Stand zu reaktivieren
-        history.back();
-      });
-    }
+    // Back-Button Funktionalität
+    const refreshOrBack = document.getElementById("btn-refresh-or-back");
+    refreshOrBack.value = 'west';
+    refreshOrBack.closest('form').onsubmit = (evt) => {
+      evt.preventDefault();
+      router.navigateBackTo(/^\/search/);
+    };
   }
 }
 const colors = ['purple','orange','green','yellow','silver-blue','brick-red'];

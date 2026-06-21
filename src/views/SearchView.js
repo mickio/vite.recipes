@@ -61,11 +61,14 @@ export default class SearchView extends AbstractView {
   afterRender(container) {
     // 0. inits
     this.isLoading = false; // damit IntersectionObserver agieren kann
+
     // 1. Back-Button Funktionalität
-    const backBtn = container.querySelector("#search-back");
-    if (backBtn) {
-      backBtn.addEventListener("click", () => router.navigateTo("/"));
-    }
+    const refreshOrBack = document.getElementById("btn-refresh-or-back");
+    refreshOrBack.value = 'west';
+    refreshOrBack.closest('form').onsubmit = (evt) => {
+      evt.preventDefault();
+      router.navigateBackTo(/^\/randomRecipe/);
+    };
     
     /*/ 2. Bilder zeigen
     let images = document.querySelectorAll('img');

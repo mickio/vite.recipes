@@ -1,5 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import { proxy } from "../services/recipeProxy.js";
+import { router } from '../router.js';
 
 export default class HomeView extends AbstractView {
   async getHtml() {
@@ -16,6 +17,8 @@ export default class HomeView extends AbstractView {
       // URL im Browser updaten, damit dieses Rezept einen eigenen Eintrag in der History hat
       console.log('[Home view] get link from recipe',recipe.result.link);
       history.replaceState({ scrollTop: 0 }, "", `/randomRecipe?url=${recipe.result.link}`);
+      router.pageStack[router.pageStack.length-1] = `/randomRecipe?url=${recipe.result.link}`;
+      router.saveStack();
     }
 
     return `
@@ -37,5 +40,14 @@ export default class HomeView extends AbstractView {
 
 </transition-container>
     `;
+  }
+  afterRender() {
+    // Den linken nav button mit refresh verknüpfen
+    const refreshOrBack = document.getElementById("btn-refresh-or-back");
+    refreshOrBack.value = 'refresh';
+    refreshOrBack.closest('form').onsubmit = (evt) => {
+        evt.preventDefault();
+        router.navigateTo("/");
+    };
   }
 }

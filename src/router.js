@@ -30,6 +30,7 @@ class Router {
     this.front = () => this.main.lastElementChild;
     this.currentViewInstance = null;
     this.pageStack = JSON.parse(sessionStorage.getItem('pageStack')) || [window.location.url];
+    this.saveStack();
 
     // Fängt Klicks auf "data-link" Elemente ab
     document.body.addEventListener("click", e => {
@@ -40,16 +41,18 @@ class Router {
     });
 
     // Reagiert auf die Back/Forward Buttons des Browsers
-    window.addEventListener("popstate", () => {
-      const aktuelleUrl = window.location.href;
-      const letzterIndex = pageStack.lastIndexOf(aktuelleUrl);
+    window.addEventListener("popstate", (evt) => {
+      const aktuelleUrl = location.pathname+location.search;
+      const letzterIndex = this.pageStack.lastIndexOf(aktuelleUrl);
+      // console.log(`[popstate] received at ${aktuelleUrl},p0sition is ${letzterIndex}`,this.pageStack);
 
       // Wenn die URL im Stack existiert UND sie nicht schon die ganz aktuelle ist
-      if (letzterIndex !== -1 && letzterIndex < pageStack.length - 1) {
+      if (letzterIndex !== -1 && letzterIndex < this.pageStack.length - 1) {
         // Der User ist zurückgegangen (entweder 1 Schritt oder mehrere via jumpBackToPattern)
         // Wir schneiden alles ab, was nach diesem Index kam
         this.pageStack = this.pageStack.slice(0, letzterIndex + 1);
         this.saveStack();
+        // console.log('[popstate] pageStack ist jetzt',this.pageStack);
         if (history.state) {
           history.replaceState({ ...history.state, $BACK: true }, "");
         }
@@ -72,36 +75,27 @@ class Router {
     sessionStorage.setItem('pageStack', JSON.stringify(this.pageStack));
   }
   
-  navigateBack() {
-    window.history.back();
-    // Seitenwechsel
-    if (history.state) {
-      history.replaceState({ ...history.state, $BACK: true }, "");
-    }
-    this.route();
-    console.log('[router][navigateBack] navigate to',window.location.pathname)
-  }
-  
   navigateBackTo(pathPattern) {
-    // Für den Back Button, wenn's zurück zur Einstiegsseite gehen soll
+    // Für den Back Button, wenn's zurück zur Einstiegs- oder Suchseite gehen soll
     for (let i = this.pageStack.length - 2; i >= 0; i--) {
+      console.log(`[router][navigateBackTo] teste ${this.pageStack[i]}`);
         if (pathPattern.test(this.pageStack[i])) {
 
-            let schritte = i - (stack.length - 1);
+            let schritte = i - (this.pageStack.length - 1);
             
             console.log(`[router][navigateBackTo] Springe ${schritte} Schritte zurück.`);
             
             window.history.go(schritte); 
-            break;
+            // Seitenwechsel
+            if (history.state) {
+              history.replaceState({ ...history.state, $BACK: true }, "");
+            }
+            // this.route();
+            console.log('[router][navigateBackTo] navigate to', this.pageStack[i]);
+            return true
         }
     }
-    
-    // Seitenwechsel
-    if (history.state) {
-      history.replaceState({ ...history.state, $BACK: true }, "");
-    }
-    this.route();
-    console.log('[router][navigateBackTo] navigate to',window.location.pathname)
+    console.error(`[router][navigateBackTo] keinen passenden pfad für ${pathPattern} gefunden!`)
   }
 
   navigateTo(url) {

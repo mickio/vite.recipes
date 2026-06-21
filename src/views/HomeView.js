@@ -22,7 +22,7 @@ export default class HomeView extends AbstractView {
     }
 
     return `
-<transition-container class="view-home" data-params='{"enter":{"name":"slide-left"},"leave":{"name":"fade"}}'>
+<transition-container class="view-home" data-params='{"enter":{"name":"${history.state?.$BACK ? 'fade':'slide-left'}"},"leave":{"name":"${history.state?.$BACK ? 'slide-left' : 'fade'}"}}'>
     <div class="inspiration">
         
         <figure>

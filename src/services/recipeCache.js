@@ -32,7 +32,7 @@ export default class RecipeCache {
     const cache = this.getAll();
     
     // Holt die URL entweder aus dem 'link'-Attribut oder dem Fallback-Parameter
-    const url = recipePayload.link || customUrl;
+    const url = recipePayload.link || recipePayload.result.link || customUrl;
     const id = this.generateIdFromUrl(url);
 
     // ID direkt in die Payload injizieren (Top-Level und im result-Objekt)

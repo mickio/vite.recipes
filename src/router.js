@@ -117,7 +117,7 @@ class Router {
     const path = window.location.pathname;
     const state = history.state || {};
     const newRoute = routes.find((route) => path.match(route.path));
-    console.log(`[router][route] current view for path ${path} is ${newRoute?.viewCls.name}`,state);
+    console.log(`[router][route] current view for path ${path} is ${newRoute?.viewCls.name} with state`,state);
     const ViewClass = newRoute?.viewCls || HomeView;
     
     // Instanziiere die neue View

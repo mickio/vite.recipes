@@ -53,7 +53,7 @@ class RecipeProxy {
 
   // 2. Endpoint: randomRecipe
   async getRandomRecipe() {
-     const response = await fetch(`${this.baseUrl}/randomRecipe`);
+    const response = await fetch(`${this.baseUrl}/randomRecipe`);
     
     // NEU: Nur fortfahren, wenn HTTP-Status OK ist
     if (!response.ok) {

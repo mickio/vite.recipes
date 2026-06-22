@@ -8,13 +8,12 @@ export default class DetailView extends AbstractView {
     const title = this.params.title;
     const url = this.params.url;
     const fullRecipe = await proxy.getDetails(title, url);
-    const recipe = {...this.params,...fullRecipe.result}
-    console.log('DetailView gets:',recipe,this.params)
+    const recipe = {...this.params,...fullRecipe.result};
+    console.log('DetailView gets:',recipe,this.params);
     return `
-      <transition-container data-params={"enter":{"name":"slide-right"},"leave":{"name":"slide-left"}}  class="recipe-details">
-        <button class="back-btn" id="detail-back">⬅ Zurück zur Suche</button>
+      <div class="recipe-details">
         ${recipeDetails(recipe)}
-      </transition-container>
+      </div>
     `;
   }
 

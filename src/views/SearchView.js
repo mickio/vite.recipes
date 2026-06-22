@@ -31,7 +31,7 @@ export default class SearchView extends AbstractView {
     }
 
     return `
-      <transition-container data-params={"enter":{"name":"slide-right"},"leave":{"name":"slide-left"}} class="view-search">
+      <div class="view-search">
         <button class="back-btn" id="search-back">⬅ Zurück zum Zufallsrezept</button>
         <h3>Suchergebnisse für "${query}"</h3>
         
@@ -40,7 +40,7 @@ export default class SearchView extends AbstractView {
         <div id="infinite-scroll-trigger"></div>
         
         <div id="search-loading" class="hidden">Rezepte werden geladen...</div>
-      </transition-container>
+      </div>
     `;
   }
 

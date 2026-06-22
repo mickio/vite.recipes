@@ -22,7 +22,6 @@ export default class HomeView extends AbstractView {
     }
 
     return `
-<transition-container class="view-home" data-params='{"enter":{"name":"${history.state?.$BACK ? 'fade':'slide-left'}"},"leave":{"name":"${history.state?.$BACK ? 'slide-left' : 'fade'}"}}'>
     <div class="inspiration">
         
         <figure>
@@ -37,8 +36,6 @@ export default class HomeView extends AbstractView {
             ${ recipe.result?.content || '<p>Keine Inspiration verfügbar.</p>'}
         </article>
     </div>
-
-</transition-container>
     `;
   }
   afterRender() {

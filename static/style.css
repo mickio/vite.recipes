@@ -1,17 +1,20 @@
 /* Der Hauptcontainer hält beide Ebenen */
 main {
   position: relative;
-  width: 100%;
   /*max-width: 600px;*/
   height: 100vh;
-  /*overflow: hidden;*/
-  overflow: scroll;
-  /*border: 1px solid #ccc;
+  width: 100%;
+  overflow: hidden;
+    /*border: 1px solid #ccc;
   background-color: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
 }
 .floating {
 	position:absolute;
+  width: 100%;
+  height: 100%;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 #background, #front {
   position: absolute;

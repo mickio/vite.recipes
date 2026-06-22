@@ -2,32 +2,56 @@ import HomeView from "./views/HomeView.js";
 import SearchView from "./views/SearchView.js";
 import DetailView from "./views/DetailView.js";
 
+const SLIDELEFT = {name: 'slide-left'};
+const FADE = {name: 'fade'};
 const routes = [
   {
     path:/^\/(index.html|randomRecipe)?$/,
     viewCls: HomeView,
-    enter: 'slide-left',
-    leave: 'fade'
+    enter: SLIDELEFT,
+    leave: FADE
   },
   {
     path:/^\/search/,
     viewCls: SearchView,
-    enter: 'zoom',
-    leave: 'enlarge'
+    enter: SLIDELEFT,
+    leave: FADE
   },
   {
     path:/^\/details/,
     viewCls: DetailView,
-    enter: 'slide-left',
-    leave: 'fade'
+    enter: SLIDELEFT,
+    leave: FADE
   }
 ];
+
+const setTransitionParams = (tc,key,value) => {
+  const params = JSON.parse(tc.dataset.params || '{}');
+  params[key] = value;
+  tc.dataset.params = JSON.stringify(params);
+}
+
+const createPage = async (route) => {
+  //TODO: Error404View statt HomeView
+  const ViewClass = route?.viewCls || HomeView;
+  const state = history.state || {};
+  const urlParams = new URLSearchParams(window.location.search);
+  const params = {...Object.fromEntries(urlParams.entries()),state};
+  const newPage = new ViewClass(params);
+  const pageHtml = await newPage.getHtml();
+  const tc = document.createElement('transition-container');
+  tc.classList.add('floating');
+  tc.innerHTML = pageHtml;
+  if (newPage.afterRender) 
+    newPage.afterRender(newPage);
+  return tc;
+}
 
 class Router {
   constructor() {
     this.main = document.querySelector('main');
     this.currentPage = () => this.main.firstElementChild;
-    this.newPage = null;
+    this.prevRoute = null;
     this.pageStack = JSON.parse(sessionStorage.getItem('pageStack')) || [window.location.url];
     this.saveStack();
 
@@ -116,39 +140,30 @@ class Router {
     const path = window.location.pathname;
     const state = history.state || {};
     const newRoute = routes.find((route) => path.match(route.path));
-    console.log(`[router][route] current view for path ${path} is ${newRoute?.viewCls.name} with state`,state);
-    const ViewClass = newRoute?.viewCls || HomeView;
-    
-    // Instanziiere die neue View
-    const urlParams = new URLSearchParams(window.location.search);
-    const params = {...Object.fromEntries(urlParams.entries()),state};
-    this.newPage = new ViewClass(params);
+    // console.log(`[router][route] current view for path ${path} is ${newRoute?.viewCls.name} with state`,state);
 
-    // Inhalt einfügen und alten node entfernen
+    // neue page einfügen und alte entfernen
     const prevPage = this.currentPage();
-    const currentPage = document.createElement('div');
-    currentPage.classList.add('floating');
-    if (state.$BACK)
+    const currentPage = await createPage(newRoute);
+    
+    // Falls history.back(),neue Seite vor der alten einfügen
+    if (state.$BACK) {
+      state.scrollTop && (this.main.scrollTop = state.scrollTop);
+      setTransitionParams(prevPage,'leave',this.prevRoute?.enter || SLIDELEFT);
+      setTransitionParams(currentPage,'enter', newRoute.leave);
       this.main.prepend(currentPage);
-    else
+    }
+    else {
+      this.main.scrollTop = 0;
+      setTransitionParams(prevPage,'leave',this.prevRoute?.leave || FADE);
+      setTransitionParams(currentPage,'enter', newRoute.enter);
       this.main.append(currentPage);
-    currentPage.innerHTML = await this.newPage.getHtml();
-    if (state.$BACK && state.scrollTop) // auf vorige Position scrollen
-      this.main.scrollTop = state.scrollTop;
-    else this.main.scrollTop = 0;
+    }
       
-    console.log('[router][route] removing previous page',prevPage.tagName);
-    // Falls transition-container, verzögertes remove
-    const tc = prevPage.tagName === 'transition-container'
-      ? prevPage
-      : prevPage.querySelector('transition-container');
-    if (tc)
-      tc.remove().then(() => prevPage?.remove()).then(() => console.log('[router][route] removed previous page',prevPage.tagName));
-    else 
-      prevPage.remove();
-    // Nachträgliche Logik der View (z.B. Event-Listener binden) ausführen
-    if (this.newPage.afterRender) 
-      this.newPage.afterRender(currentPage);
+    // console.log('[router][route] removing previous page',prevPage.tagName);
+    // Route merken für nächsten Aufruf
+    this.prevRoute = newRoute;
+    prevPage.remove();
   };
 
 }

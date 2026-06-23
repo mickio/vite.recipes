@@ -31,18 +31,34 @@ const colors = ['purple','orange','green','yellow','silver-blue','brick-red'];
 const typefacesLarge = ['corben-nobile','droid','arvo-pt-sans','alerta-crimson','ubuntu-vollkorn','molengo-lekton','lobster-cabin'];
 const typefacesSmall = ['allan-cardo','dancing-script-josefin','raleway-goudy-bookletter']
 
-export function getRandomColor() {
-    const index = Math.round(Math.random()*5);
-    return colors[index]
+function colorDice() {
+  let lastColorInd = 0, colorInd = 0;
+  return function (param) {
+    while (lastColorInd === colorInd) {
+      colorInd = Math.round(Math.random()*5);
+    }
+    lastColorInd = colorInd;
+    return colors[colorInd] 
+  }
 }
 
-export function getRandomTypeface(title) {
-    let index;
+export const getRandomColor = colorDice ()
+
+function typefaceDice () {
+  let lastIndex=0,index=0;
+  return function (title) {
     if (title.length > 30) {
+      while (lastIndex === index)
         index = Math.round(Math.random()*2)
-        return typefacesSmall[index]
+      lastIndex = index
+      return typefacesSmall[index]
     } else {
+      while (lastIndex === index)
         index = Math.round(Math.random()*6)
-        return typefacesLarge[index]
-      }
+      lastIndex = index
+      return typefacesLarge[index]
+    }
+  }
 }
+
+export const getRandomTypeface = typefaceDice ()

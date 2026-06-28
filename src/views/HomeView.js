@@ -1,5 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import { proxy } from "../services/recipeProxy.js";
+import FavoritesDB from '../services/recipeCache.js';
 import { router } from '../router.js';
 
 export default class HomeView extends AbstractView {
@@ -27,8 +28,16 @@ export default class HomeView extends AbstractView {
         <figure>
             ${recipe.result.media || ''}
             <figcaption>
-    			<a href="${recipe.result.link??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipe.result.link).host}</b></a>
-    		</figcaption>
+        			<a href="${recipe.result.link??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipe.result.link).host}</b></a>
+          		</figcaption>
+      <div id="fab">
+        
+          <form>
+            <input id="toggle-favorite" data-id="${recipe.id}" type="submit" value="favorite_outlined">
+            
+          </form>
+        </div>
+        
         </figure>
         
         <article class="content">
@@ -38,13 +47,22 @@ export default class HomeView extends AbstractView {
     </div>
     `;
   }
-  afterRender() {
-    // Den linken nav button mit refresh verknüpfen
+  afterRender(container) {
+    const favDB = new FavoritesDB();
     const refreshOrBack = document.getElementById("btn-refresh-or-back");
+    const btnToggleFavorite = container.querySelector('#toggle-favorite');
+    // Den linken nav button mit refresh verknüpfen
     refreshOrBack.value = 'refresh';
     refreshOrBack.closest('form').onsubmit = (evt) => {
         evt.preventDefault();
         router.navigateTo("/");
     };
+    
+    // toggle favorite
+    btnToggleFavorite.closest('form').onsubmit = (evt) => {
+        evt.preventDefault();
+        const isFav = favDB.toggleFavorite(btnToggleFavorite.dataset.id);
+        btnToggleFavorite.value = isFav?'favorite':'favorite_outlined';
+    }
   }
 }

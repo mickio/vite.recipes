@@ -66,10 +66,6 @@ main {
   display: none !important;
 }
 
-.no-results {
-  color: #999;
-  font-style: italic;
-}
 /* Styling für das Endless Scrolling */
 #infinite-scroll-trigger {
   height: 1px; /* Minimal hoch, damit der Observer anschlägt */
@@ -228,19 +224,42 @@ main {
 		text-align: left;
 	}
 	/* R E C I P E  D E T A I L S  styles */
-	.recipe-details button {
+	/* floating action buttons */
+	#fab {
 		background: none;
 		border: none;
-		font-family: "Material Icons";
-		font-size: 36px;
-		color: red;
+		/* font-size: 36px; */
 		position: absolute;
 		bottom: 30px;
 		right: 30px;
-		content: "favorite";
-		width:40px;
+		/* width:40px; */
 		cursor: pointer;
 	}
+	#fab input[type=submit] {
+	padding: 15px;
+	border: unset;
+	/* border-radius: 25px;
+	outline: var(--brick-red) solid 1.5px; */
+	font-family: 'Material Icons';
+	font-size: 36px;
+	font-weight: 700;
+	/* line-height: 20px; */
+	width: 50px;
+	color: var(--brick-red);
+	background-color: transparent;
+	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	transition: background-color 0.2s ease-in-out;
+	transition: all .1s ease-in; */
+}
+/* #fab input[type=submit]:hover {
+	background-color: var(--orange);
+	transition: background-color 0.2s ease-in-out;
+}
+
+#fab input[type=submit]:active {
+	background-color: var(--green);
+	transition: background-color 0.5s ease-in-out;
+} */
 	.pdf-button {
 		right: 80px; /* Position next to the favorite button */
 		color: white;
@@ -463,7 +482,22 @@ main {
     }
   
   
-  /* Die navbar */
+  /* N A V B A R */
+    nav {
+        position: absolute;
+        top: 0;
+        z-index: 10;
+        width:100vw;
+    }
+  	.navbar {
+        display: flex;
+        justify-content: space-between;
+        width: calc(100% - 80px);
+        /* top: 40px; */
+        margin: 40px auto;
+        left: 40px;
+        right: 40px;
+    }  
     form.search-container {
         position: relative;
         display: flex;
@@ -487,6 +521,10 @@ main {
         padding: 15px;
         width: 100px;
         transition: all 0.5s ease-in-out;
+    }
+    .search-container input[type=submit] {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;    
     }
 
     /* Für das aufblähen des Merkliste Icon */
@@ -532,23 +570,4 @@ main {
         background-color: var(--green);
         transition: background-color 0.5s ease-in-out;
     }
-    .search-container input[type=submit] {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;    
-    }
-    #navbar {
-        position: absolute;
-        top: 0;
-        z-index: 10;
-        width:100vw;
-    }
-  	nav {
-        display: flex;
-        justify-content: space-between;
-        width: calc(100% - 80px);
-        /* top: 40px; */
-        margin: 40px auto;
-        left: 40px;
-        right: 40px;
-    }  
     /* Ende navbar */

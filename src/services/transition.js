@@ -1,6 +1,6 @@
 const styles = `
 :host {
-    --duration: .5s;
+    --duration: .3s;
     --timing-function: ease-in;
     --box-positionX: 50vw;
     --box-positionY: 50vh;

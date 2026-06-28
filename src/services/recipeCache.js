@@ -16,6 +16,16 @@ export default class RecipeCache {
     const data = localStorage.getItem(this.storageKey);
     return data ? JSON.parse(data) : {};
   }
+  
+  getAllFavorites () {
+    return this.getAll().filter((item) => item.isFavorite)
+  }
+  
+  filterAllFavorites (term) {
+    const filterFun = (item) => JSON.stringify(term).toLowerCase().includes(term.toLowerCase());
+    const favs = this.getAllFavorites();
+    return favs.filter(filterFun)
+  }
 
   saveAll(data) {
     localStorage.setItem(this.storageKey, JSON.stringify(data));
@@ -27,7 +37,7 @@ export default class RecipeCache {
     return cache[id] || null;
   }
 
-  // KORREKTUR: Nutzt jetzt primär recipePayload.link
+  // cached Recipe, identifier ist link in
   saveRecipe(recipePayload, customUrl = null) {
     const cache = this.getAll();
     
@@ -45,14 +55,31 @@ export default class RecipeCache {
     this.saveAll(cache);
     return recipePayload;
   }
-
-  exportCacheAsJSON() {
-    return JSON.stringify(this.getAll(), null, 2);
+  
+  toggleFavorite(idOrUrl) {
+    const recipe = this.getRecipe(idOrUrl);
+    recipe.isFavorite = !recipe.isFavorite;
+    this.saveRecipe(recipe);
+    return recipe.isFavorite;
+  }
+  
+  exportFavsAsObjectURL() {
+    const data = {version:1, payload: this.getAllFavorites()};
+    const blob = new Blob([JSON.stringify(data,null,2)],{type: 'application/json'})
+    return URL.createObjectURL(blob)
   }
 
-  importCacheFromJSON(jsonObject, overwrite = true) {
-    if (typeof jsonObject !== 'object' || jsonObject === null) {
-      throw new Error("Ungültiges JSON-Objekt für den Import.");
+  importFavsFromJSON(jsonObjectStr, overwrite = true) {
+    let jsonObject = null;
+    try {
+      jsonObject = JSON.parse(jsonObjectStr);
+    } catch (e) {
+      console.error('[recipeCache][importFavsFromJSON] Leider keine JSON-Datei');
+      return
+    }
+    if (typeof jsonObject !== 'object' || jsonObject.version !== 1) {
+      console.error("[recipeCache][importFavsFromJSON] Ungültiges JSON-Objekt für den Import.");
+      return
     }
     if (overwrite) {
       this.saveAll(jsonObject);

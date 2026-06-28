@@ -97,9 +97,10 @@ export default (recipeData) => `<article>
     <figure>
         <img ${recipeData.image?.src?`src="${recipeData.image.src}"`:recipeData.image?.srcset?`srcset="${recipeData.image.srcset}"`:`src="${recipeData.thumbnail || ''}"`} alt=${recipeData.title??'Ohne Titel'}>
         <figcaption>
-			<a href="${recipeData.url??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipeData.url).host}</b></a>
-		</figcaption>
+					<a href="${recipeData.url??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipeData.url).host}</b></a>
+				</figcaption>
     </figure>
+    <div id="fab"/>
     <section class=${recipeData.typeface}>
         <h1 class="is-smaller-mobile">${recipeData.title??''}</h1>
         <div class="info-box">

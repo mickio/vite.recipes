@@ -55,7 +55,7 @@ class Router {
     this.currentPage = () => this.main.firstElementChild;
     this.prevRoute = null;
     // popstate verrät nicht, ob eine vorwärts- oder rückwärts-Navigation war. window.history auch nicht. Also selbst buchführen...
-    this.pageStack = JSON.parse(sessionStorage.getItem('pageStack')) || [window.location.pathname+location.search];
+    this.pageStack = JSON.parse(sessionStorage.getItem('pageStack')) || [location.pathname+location.search];
     this.saveStack();
     
     this._initEventListeners();
@@ -93,10 +93,8 @@ class Router {
   }
 
   _updateStateIsBack(isBack) {
-    if (history.state) {
-      console.log(`[popstate][updateStateIsBack] stepping back? ${isBack}`)
-      history.replaceState({ ...history.state, $BACK: isBack }, "");
-    }
+    // im state steht entweder nix oder ein Objekt
+    history.replaceState({ ...history.state, $ISBACK: isBack }, "");
   }
 
   saveStack() {
@@ -144,7 +142,7 @@ class Router {
   _animateAndRender(prevPage, currentPage, newRoute) {
     const state = history.state || {};
 
-    if (state.$BACK) {
+    if (state.$ISBACK) {
       setTransitionParams(prevPage, 'leave', this.prevRoute?.enter || SLIDELEFT);
       setTransitionParams(currentPage, 'enter', newRoute.leave);
       this.main.prepend(currentPage);

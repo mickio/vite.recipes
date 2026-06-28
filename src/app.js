@@ -1,26 +1,24 @@
 import { router } from "./router.js";
+import NavbarView from './views/NavbarView.js';
 import "./services/transition.js";
 
+const createPageComponent = async (name,viewCls) => {
+  const pageComponent = new viewCls();
+  document.querySelector(`body > ${name}`).innerHTML = await pageComponent.getHtml();
+  const tc = document.querySelector('nav > transition-container');
+  pageComponent.afterRender(tc);
+}
+
 const ondocloaded = async () => {
-  document.removeEventListener("DOMContentLoaded",ondocloaded);
+  // Seitenelemente einbauen
+  createPageComponent('nav',NavbarView);
   
-  // 1. Router das erste Mal anwerfen
+  // route!
   console.log('[app.js] DOM content loaded, call for routing');
-  const initCompleted = router.route();
-  
-  // 2. navbar aufklappen
-  const navbar = document.getElementById('navbar');
-  await initCompleted;
-  navbar.classList.remove('is-hidden');
-  navbar.show();
-  
-  // 3. Das Suchfeld in der Kopfzeile kontrollieren
-  document.getElementById("search-form").addEventListener("submit", e => {
-    e.preventDefault();
-    const query = document.getElementById("search-input").value.trim();
-    if (query) {
-      router.navigateTo(`/search?q=${encodeURIComponent(query)}`);
-    }
-  });
+  router.route();
 };
+  
 document.addEventListener("DOMContentLoaded", ondocloaded, { once: true });
+/*document.querySelector('main').addEventListener('scrollend',(evt) => {
+  console.log(`[XXX] scrolltop of target ${evt.target.tagName} is ${evt.target.scrollTop}`)
+},true)*/

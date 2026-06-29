@@ -13,16 +13,13 @@ const styles = `
     --x-end: 0;
     --y-start:-120px;
     --y-end: 0;
-    --display-at-start: none;
 }
 :host {
   display: block;
 }
+
 :host(:state(hidden)) {
     display: none !important;
-}
-:host(:not(:state(start)):not(:state(end))) {
-  display: var(--display-at-start) !im;
 }
 
 :host([data-transition="enlarge"]:state(enter):state(start)), :host([data-transition="minimize"]:state(leave):state(end)) {
@@ -139,7 +136,8 @@ class Transition extends HTMLElement {
       this.shadowRoot.adoptedStyleSheets = [transitionStyles]; 
       
       // Use internal states to control transitions
-      this._internals = this.attachInternals()
+      this._internals = this.attachInternals();
+      this._internals.states.add('hidden');
       // console.log('### C O N S T R U C T E D')
     }
 
@@ -234,25 +232,22 @@ class Transition extends HTMLElement {
       // console.log('[connectedCallback] preventDefault ?','preventDefault' in this.dataset);
       if ('preventDefault' in this.dataset)   {
         // console.log(`[transition][connectedCallback] prevent default`)
-        this._internals.states.add('hidden');
+        return;
       }
-      else if (document.readyState==='complete'){
-        // console.log(`[transition][${this.id??''}][connectedCallback] start transition ${this.dataset.params?.enter?.name}...`)
-        this.show();
-      }
-      else {
-        // console.log('[transition][connectedCallback] readyState noch nicht complete.');
-        const transition = this;
-        document.addEventListener('DOMContentLoaded',transition.show,{once:true})
-      }
+      // console.log(`[transition][${this.id??''}][connectedCallback] start transition ${this.dataset.params?.enter?.name}...`)
+      this.show();
     }
     
     attributeChangedCallback (attName, oldValue,newValue) {
       // console.log(`att "${attName}" changed from "${oldValue}" to "${newValue}"`)
       if (attName === 'data-visible-at-start') {
-        this.style.setProperty("--visible-at-start","block")
+        this._internals.states.delete('hidden');
+      }
+      else if (attName === 'data-prevent-default') {
+        this._internals.states.add('hidden');
       }
       else if (attName === 'data-params') {
+        console.log(`[transition][${this.id??''}][attributeChangedCallback] setting data-params`,JSON.parse(newValue));
         const params = JSON.parse(newValue)
         if (params.enter) {
           this.enterName = params.enter.name

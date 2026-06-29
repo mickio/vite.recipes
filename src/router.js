@@ -30,15 +30,11 @@ const createPage = async (route) => {
     const params = { ...Object.fromEntries(urlParams.entries()), state };
     
     const newPage = new ViewClass(params);
-    const pageHtml = await newPage.getHtml();
+    const pageView = await newPage.getView();
     
     const tc = document.createElement('transition-container');
     tc.classList.add('floating');
-    tc.innerHTML = pageHtml;
-    
-    if (newPage.afterRender) {
-      newPage.afterRender(tc);
-    }
+    tc.append(pageView)
     return tc;
   } catch (error) {
     console.error("Fehler beim Erstellen der Seite:", error);

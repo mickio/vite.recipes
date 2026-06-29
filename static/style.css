@@ -489,7 +489,7 @@ main {
         z-index: 10;
         width:100vw;
     }
-  	.navbar {
+  	#nav-container {
         display: flex;
         justify-content: space-between;
         width: calc(100% - 80px);

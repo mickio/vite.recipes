@@ -2,16 +2,15 @@ import { router } from "./router.js";
 import NavbarView from './views/NavbarView.js';
 import "./services/transition.js";
 
-const createPageComponent = async (name,viewCls) => {
+const createPageComponent = async (anchorId,viewCls) => {
   const pageComponent = new viewCls();
-  document.querySelector(`body > ${name}`).innerHTML = await pageComponent.getHtml();
-  const tc = document.querySelector('nav > transition-container');
-  pageComponent.afterRender(tc);
+  const pageEl = await pageComponent.getView();
+  document.getElementById(anchorId).append(pageEl);
 }
 
 const ondocloaded = async () => {
   // Seitenelemente einbauen
-  createPageComponent('nav',NavbarView);
+  createPageComponent('navbar',NavbarView);
   
   // route!
   console.log('[app.js] DOM content loaded, call for routing');

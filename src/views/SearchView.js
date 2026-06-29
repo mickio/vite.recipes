@@ -32,7 +32,6 @@ export default class SearchView extends AbstractView {
 
     return `
       <div class="view-search">
-        <button class="back-btn" id="search-back">⬅ Zurück zum Zufallsrezept</button>
         <h3>Suchergebnisse für "${query}"</h3>
         
         <div class="gallery">${listItems}</div>

@@ -1,12 +1,10 @@
 import AbstractView from "./AbstractView.js";
-import recipeDetails from '../templates/recipeDetails.js';
-import { proxy } from "../services/recipeProxy.js";
 import { router } from '../router.js';
 
-export default class DetailView extends AbstractView {
+export default class extends AbstractView {
   async getHtml() {
     return `
-    <transition-container data-params='{"enter":{"name":"slide-down"},"leave":{"name":"slide-down"}}' data-prevent-default class="navbar is-hidden">  
+    <transition-container id="nav-container" data-params='{"enter":{"name":"slide-down"},"leave":{"name":"slide-down"}}'>  
       <div class="navbar-left">
         <form class="nav-container">
           <input id="btn-refresh-or-back" type="submit" value="refresh">
@@ -27,14 +25,14 @@ export default class DetailView extends AbstractView {
     </transition-container>
     `
   }
-  afterRender(navbar) {
-    navbar.classList.remove('is-hidden');
-    navbar.show();
-    
+  afterRender(fragment) {
     // Das Suchfeld in der Kopfzeile kontrollieren
-    document.getElementById("search-form").addEventListener("submit", e => {
+    const searchForm = this.$('search-form');
+    const searchInput = this.$("search-input");
+    console.log(`[Navbar][afterRender]`,searchForm);
+    searchForm.addEventListener("submit", e => {
       e.preventDefault();
-      const query = document.getElementById("search-input").value.trim();
+      const query = searchInput.value.trim();
       if (query) {
         router.navigateTo(`/search?q=${encodeURIComponent(query)}`);
       }

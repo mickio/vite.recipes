@@ -99,8 +99,14 @@ export default (recipeData) => `<article>
         <figcaption>
 					<a href="${recipeData.url??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipeData.url).host}</b></a>
 				</figcaption>
+      <div id="fab">
+        
+          <form>
+            <input id="toggle-favorite" data-id="${recipeData.id}" type="submit" value="favorite_outlined">
+            
+          </form>
+        </div>
     </figure>
-    <div id="fab"/>
     <section class=${recipeData.typeface}>
         <h1 class="is-smaller-mobile">${recipeData.title??''}</h1>
         <div class="info-box">

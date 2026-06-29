@@ -25,19 +25,19 @@ export default class extends AbstractView {
     `
   }
   
-  afterRender(tc) {
+  afterRender(fragment) {
      
-     const suchfeld = document.getElementById('search-favorites');
-     const btnCloseSidebar = document.getElementById('close-sidebar');
-     const favContainer = tc.querySelector('div.panel-content');
-     const btnDownloadFav = tc.querySelector('div.load > a');
-     const btnUploadFav = tc.querySelector('#upload');
+     const suchfeld = this.$('search-favorites');
+     const btnCloseSidebar = this.$('close-sidebar');
+     const favContainer = fragment.querySelector('div.panel-content');
+     const btnDownloadFav = fragment.querySelector('div.load > a');
+     const btnUploadFav = fragment.querySelector('#upload');
      const generateFavoritesList = (list) => list.map(favEntry).join('\n');
      
     // Suchfeld
     suchfeld.oninput = ({target}) => favContainer.innerHTML = generateFavoritesList(target.value);
     // sidebar close
-    btnCloseSidebar.onclick = tc.hide;
+    btnCloseSidebar.onclick = fragment.hide;
     // ungefilterte Liste
     favContainer.innerHTML = generateFavoritesList();
     // download favorites 

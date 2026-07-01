@@ -2,7 +2,7 @@ import RecipeCache from './recipeCache.js';
 const CSE_PAGINATION_START = 0;
 
 class RecipeProxy {
-  constructor(baseUrl = 'http://127.0.0.1:5000/api', cacheInstance = new RecipeCache()) {
+  constructor(baseUrl = '/api', cacheInstance = new RecipeCache()) {
     this.baseUrl = baseUrl;
     this.cache = cacheInstance;
     this.searchCache = {

@@ -93,17 +93,15 @@
 `}
 */
 
-export default (recipeData) => `<article>
+export default (recipeData,isFavorite) => `<article>
     <figure>
         <img ${recipeData.image?.src?`src="${recipeData.image.src}"`:recipeData.image?.srcset?`srcset="${recipeData.image.srcset}"`:`src="${recipeData.thumbnail || ''}"`} alt=${recipeData.title??'Ohne Titel'}>
         <figcaption>
-					<a href="${recipeData.url??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipeData.url).host}</b></a>
-				</figcaption>
-      <div id="fab">
-        
+			<a href="${recipeData.url??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipeData.url).host}</b></a>
+		</figcaption>
+      	<div id="fab">
           <form>
-            <input id="toggle-favorite" data-id="${recipeData.id}" type="submit" value="favorite_outlined">
-            
+            <input id="toggle-favorite" data-id="${recipeData.id}" type="submit" value="${isFavorite?'favorite':'favorite_outlined'}">            
           </form>
         </div>
     </figure>

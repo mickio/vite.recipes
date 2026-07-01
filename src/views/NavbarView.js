@@ -19,7 +19,7 @@ export default class extends AbstractView {
       </div>
       <div class="navbar-right">
         <form>
-          <input class="blink" type="submit" value="list_alt"/>
+          <input id="btn-open-sidebar" class="blink" type="submit" value="list_alt"/>
         </form>    
       </div>
     </transition-container>
@@ -29,7 +29,6 @@ export default class extends AbstractView {
     // Das Suchfeld in der Kopfzeile kontrollieren
     const searchForm = this.$('search-form');
     const searchInput = this.$("search-input");
-    console.log(`[Navbar][afterRender]`,searchForm);
     searchForm.addEventListener("submit", e => {
       e.preventDefault();
       const query = searchInput.value.trim();
@@ -37,7 +36,14 @@ export default class extends AbstractView {
         router.navigateTo(`/search?q=${encodeURIComponent(query)}`);
       }
     });
-
+    
+    // sidebar togglen
+    const btnToggleSidebar = this.$('btn-open-sidebar');
+    btnToggleSidebar.closest('form').onsubmit = evt => {
+        evt.preventDefault();
+        const sidebar = document.getElementById('sidebar-container');
+        sidebar.toggle();
+    }
   }
   
 }

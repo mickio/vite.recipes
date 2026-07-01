@@ -23,26 +23,18 @@ const setTransitionParams = (element, key, value) => {
 };
 
 const createPage = async (route) => {
-  try {
-    const ViewClass = route.viewCls;
-    const state = history.state || {};
-    const urlParams = new URLSearchParams(window.location.search);
-    const params = { ...Object.fromEntries(urlParams.entries()), state };
-    
-    const newPage = new ViewClass(params);
-    const pageView = await newPage.getView();
-    
-    const tc = document.createElement('transition-container');
-    tc.classList.add('floating');
-    tc.append(pageView)
-    return tc;
-  } catch (error) {
-    console.error("Fehler beim Erstellen der Seite:", error);
-    // Minimales Fallback-Element, damit die App nicht komplett einfriert
-    const errorEl = document.createElement('div');
-    errorEl.textContent = "Inhalt konnte nicht geladen werden.";
-    return errorEl;
-  }
+  const ViewClass = route.viewCls;
+  const state = history.state || {};
+  const urlParams = new URLSearchParams(window.location.search);
+  const params = { ...Object.fromEntries(urlParams.entries()), state };
+  
+  const newPage = new ViewClass(params);
+  const pageView = await newPage.getView();
+  
+  const tc = document.createElement('transition-container');
+  tc.classList.add('floating');
+  tc.append(pageView)
+  return tc;
 };
 
 class Router {
@@ -127,8 +119,22 @@ class Router {
     const newRoute = routes.find((route) => path.match(route.path)); 
     
     const prevPage = this.currentPage();
-    const currentPage = await createPage(newRoute);
-    
+    let currentPage = null;
+    try {
+      currentPage = await createPage(newRoute);
+    } catch (error) {
+      console.error(`[router][route] Fehler beim Erstellen der Seite für ${newRoute.path}:`, error);
+      const errorEvent = new CustomEvent("toast", {
+        detail: {
+          color: "red",
+          title: "Das hätte nicht passieren dürfen...",
+          text: error.message
+        }
+      });
+      document.body.dispatchEvent(errorEvent);
+      return;
+    }
+
     this._animateAndRender(prevPage, currentPage, newRoute);
     
     this.prevRoute = newRoute;

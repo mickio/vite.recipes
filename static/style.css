@@ -10,11 +10,11 @@ main {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
 }
 .floating {
-	position:absolute;
+  position:absolute;
   width: 100%;
   height: 100%;
-	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 #background, #front {
   position: absolute;
@@ -483,11 +483,12 @@ main {
   
   
   /* N A V B A R */
-    nav {
-        position: absolute;
+    nav, aside {
+        position: fixed;
         top: 0;
         z-index: 10;
         width:100vw;
+        height: 0;
     }
   	#nav-container {
         display: flex;
@@ -571,3 +572,218 @@ main {
         transition: background-color 0.5s ease-in-out;
     }
     /* Ende navbar */
+
+/* S I D E B A R */
+    /* Die sidebar für die Merkliste */
+    .modal {
+        /* background: white; */
+        top: 0;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        backdrop-filter: blur(3px);
+    }
+    #sidebar-container {
+        /* position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh; */
+        max-width: 50vh;
+        min-width: 270px;
+        /* margin-top: 200px; */
+        background: white;
+        /* transform: translateX(800px);
+        transition: transform .3s ease-in; */
+        box-shadow: 2px 2px 20px rgb(95, 95, 95);
+    }
+    @media screen and (maxWidth < 600px) {
+        aside {width: 100vw}
+    }
+    /* aside.is-visible {
+        transform: translateX(0);
+        transition: transform .3s ease-in;
+    } */
+    /* aside input[type=submit] {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        position: absolute;
+        top: 30px;
+        left: -50px;
+        outline: solid white 2px;
+    } */
+
+    /* Der Header zum Filtern von Einträgen */
+    .panel-header {
+        padding: 5px;
+    }
+    .panel-header input[type=search] {
+        color: black;
+        background-color: white;
+        padding: 10px 10px 10px 30px;
+        width: calc(100% - 60px);
+        border-radius: 3px;
+        box-shadow: none;
+        border: 1px grey solid;
+    }
+    .panel-header input[type=search]:focus {
+        border: 1px darkgray solid;
+    }
+    .panel-header icon:nth-of-type(1) {
+        color: grey;
+        top: 14px;
+        right: unset;
+        left:13px;
+        cursor: unset;
+    }
+    .panel-header icon:nth-of-type(2) {
+        color: black;
+        top: 5px;
+        right: 5px;
+        font-size: xx-large;
+    }
+    .panel-content {
+        height: calc(100vh - 100px);
+        overflow-y: scroll;
+    }
+    /* ein entry */
+    .card {
+        position: relative;
+        display: flex;
+        /* height: 100px;  */
+        margin:2px; 
+        border-bottom: darkgrey 1px solid;
+        cursor: pointer;
+        padding-right: 50px;
+    }
+    .card:hover {
+        background-color: var(--purple);
+        color: white;
+    }
+    .card > .card-image > img {
+        object-fit: cover;
+        height: 100%;
+        width: 100px;
+        max-height: 100px;
+    }
+    .card > .card-content {
+        padding: 10px;
+        width: 100%;
+        /* height: 80%;
+        overflow: hidden; */
+    }
+    .card > .card-content > h1 {
+        font-size: large;
+        margin: 0 0 7px 0;
+    }
+    .card form {
+        position: absolute;
+        top: 50%;
+        right:10px;
+        transform: translateY(-50%);
+    }
+    .card input[type=submit] {
+        border: none;
+        background: none;
+        font-family: "Material Icons";
+        font-size: 30px;
+        color: white;
+        /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+    }
+    @media screen and (max-width: 600px) {
+        .card {
+            height: unset;
+        }
+        /* .card form {
+            display: none;
+        } */
+        .card > .card-content {
+            height: unset;
+        }
+        .card > .card-content > h1 {
+            font-size: large;
+            margin: 7px 0;
+        }
+        .card .card-image {
+            display:none;
+        }
+        div.info-box {
+            display: none;
+        }
+    }
+    /* optionale info-box*/
+	.info-box {
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 100%;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	}
+	.info-box div {
+		flex: 0 0 auto;
+		margin-right: 20px;
+        max-width:calc(33% - 20px);
+	}
+	.info-box h2{
+		font-size: x-small;
+		font-variant: small-caps;
+		margin: 0;
+		line-height: 10px;
+		text-align: left;
+	}
+	
+    /* Die Buttons zum laden/speichern der Merkliste */
+    .load {
+        box-sizing: border-box;
+        height: 50px;
+        width: 100%;
+        padding: 1px 3px 3px 3px;
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 3px;
+    }
+    .load a, .load label {
+        text-decoration: none;
+        color: #6b5b95;
+        border-radius: 5px;
+        border: 2px #6b5b95cc solid;
+        background-color: white;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .load label {
+        cursor: pointer;
+    }
+    .load div, .load label {
+        box-sizing: border-box;
+        display: inline-block;
+        line-height: 40px;
+        text-align: center;
+        width: 100%;
+    }
+    .load a:hover, .load label:hover {
+        border-color: var(--purple);
+        background-color: var(--purple);
+        color: white;
+    }
+    .load div.download::before {
+        font-family: "Material Icons";
+        /* font-size: x-large; */
+        content: "download";
+    }
+    .load label::before {
+        font-family: "Material Icons";
+        content: "upload";
+    }
+    .upload input {
+        display: none
+    }
+    /* Die berührungsempfinlichen Bereiche fürs Wischen */
+    .touch {
+        width:20px;
+        height: 80vh;
+        position: fixed;
+        top:100px;
+        z-index: 1;
+    }
+    .touch.right {
+        right:0;
+    }
+    

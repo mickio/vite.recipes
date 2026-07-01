@@ -1,6 +1,9 @@
+const VERSION = "Merkzettel version 1";
+
 export default class RecipeCache {
   constructor(storageKey = 'recipe_cache_data') {
     this.storageKey = storageKey;
+    this.importFavsFromJSON = this.importFavsFromJSON.bind(this);
   }
 
   // Hilfsmethode: Generiert eine ID aus einer URL
@@ -18,12 +21,13 @@ export default class RecipeCache {
   }
   
   getAllFavorites () {
-    return this.getAll().filter((item) => item.isFavorite)
+    return Object.values(this.getAll()).filter((item) => item.isFavorite)
   }
   
   filterAllFavorites (term) {
-    const filterFun = (item) => JSON.stringify(term).toLowerCase().includes(term.toLowerCase());
+    const filterFun = (item) => term ? JSON.stringify(item).toLowerCase().includes(term.toLowerCase()) : true;
     const favs = this.getAllFavorites();
+    console.log('filter all favorites',favs)
     return favs.filter(filterFun)
   }
 
@@ -38,22 +42,30 @@ export default class RecipeCache {
   }
 
   // cached Recipe, identifier ist link in
-  saveRecipe(recipePayload, customUrl = null) {
+  saveRecipe(recipe, customUrl = null) {
     const cache = this.getAll();
-    
-    // Holt die URL entweder aus dem 'link'-Attribut oder dem Fallback-Parameter
-    const url = recipePayload.link || recipePayload.result.link || customUrl;
-    const id = this.generateIdFromUrl(url);
 
-    // ID direkt in die Payload injizieren (Top-Level und im result-Objekt)
-    recipePayload.id = id;
-    if (recipePayload.result) {
-      recipePayload.result.id = id;
+    // Falls die ID bereits existiert, überschreiben wir das bestehende Rezept
+    if (recipe.id && cache[recipe.id]) {
+      cache[recipe.id] = { ...cache[recipe.id], ...recipe };
+      this.saveAll(cache);
+      return cache[recipe.id];
     }
 
-    cache[id] = recipePayload;
+    // Falls keine ID vorhanden ist, generieren wir eine aus der URL
+    const url = recipe.result?.link || customUrl;
+    const id = recipe.result?._id || this.generateIdFromUrl(url);
+    
+    // ID direkt in die Payload injizieren (Top-Level und im result-Objekt)
+    recipe.id = id;
+    if (recipe.result) {
+      recipe.result.id = id;
+      recipe.result.link = url; // Sicherstellen, dass der Link im result-Objekt vorhanden ist
+    }
+
+    cache[id] = recipe;
     this.saveAll(cache);
-    return recipePayload;
+    return recipe;
   }
   
   toggleFavorite(idOrUrl) {
@@ -64,12 +76,12 @@ export default class RecipeCache {
   }
   
   exportFavsAsObjectURL() {
-    const data = {version:1, payload: this.getAllFavorites()};
+    const data = {version: VERSION, payload: this.getAllFavorites()};
     const blob = new Blob([JSON.stringify(data,null,2)],{type: 'application/json'})
     return URL.createObjectURL(blob)
   }
 
-  importFavsFromJSON(jsonObjectStr, overwrite = true) {
+  importFavsFromJSON(jsonObjectStr, overwrite = false) {
     let jsonObject = null;
     try {
       jsonObject = JSON.parse(jsonObjectStr);
@@ -77,15 +89,18 @@ export default class RecipeCache {
       console.error('[recipeCache][importFavsFromJSON] Leider keine JSON-Datei');
       return
     }
-    if (typeof jsonObject !== 'object' || jsonObject.version !== 1) {
+    if (typeof jsonObject !== 'object' || jsonObject.version !== VERSION) {
       console.error("[recipeCache][importFavsFromJSON] Ungültiges JSON-Objekt für den Import.");
       return
     }
+    const pl = jsonObject.payload;
+    const payload = {};
+    pl.forEach(item => payload[item.id??item._id??item.link]=item); 
     if (overwrite) {
-      this.saveAll(jsonObject);
+      this.saveAll(payload);
     } else {
       const current = this.getAll();
-      const merged = { ...current, ...jsonObject };
+      const merged = { ...current, ...payload };
       this.saveAll(merged);
     }
   }

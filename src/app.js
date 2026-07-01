@@ -1,5 +1,7 @@
 import { router } from "./router.js";
 import NavbarView from './views/NavbarView.js';
+import ToastView from './views/ToastView.js';
+import SidebarView from './views/AsideFavoritesView.js';
 import "./services/transition.js";
 
 const createPageComponent = async (anchorId,viewCls) => {
@@ -10,7 +12,11 @@ const createPageComponent = async (anchorId,viewCls) => {
 
 const ondocloaded = async () => {
   // Seitenelemente einbauen
-  createPageComponent('navbar',NavbarView);
+  await Promise.all([
+    createPageComponent('navbar',NavbarView),
+    createPageComponent('toast',ToastView),
+    createPageComponent('sidebar',SidebarView)
+  ]);
   
   // route!
   console.log('[app.js] DOM content loaded, call for routing');

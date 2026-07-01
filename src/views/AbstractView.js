@@ -29,3 +29,9 @@ export default class AbstractView {
     return document.getElementById(id);
   }
 }
+
+const viewClasses = {};
+
+export const registerViewClass = (name,cls) => viewClasses[name] = cls;
+
+export const getViewClass = (name) => name in viewClasses ? viewClasses[name] : null

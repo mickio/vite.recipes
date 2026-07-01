@@ -23,46 +23,45 @@ export default class HomeView extends AbstractView {
     }
 
     return `
-    <div class="inspiration">
-        
-        <figure>
-            ${recipe.result.media || ''}
-            <figcaption>
-        			<a href="${recipe.result.link??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipe.result.link).host}</b></a>
-          		</figcaption>
-      <div id="fab">
-        
+    <div class="inspiration">    
+      <figure>
+        ${recipe.result.media || ''}
+        <figcaption>
+          <a href="${recipe.result.link??''}" target="_blank" rel="noopener noreferrer"><b>${new URL(recipe.result.link).host}</b></a>
+        </figcaption>
+        <div id="fab">
           <form>
-            <input id="toggle-favorite" data-id="${recipe.id}" type="submit" value="favorite_outlined">
-            
+            <input id="toggle-favorite" data-id="${recipe.id}" type="submit" value="${recipe.isFavorite?'favorite':'favorite_outlined'}">            
           </form>
-        </div>
+        </div>        
+      </figure>
         
-        </figure>
-        
-        <article class="content">
-            <h1 class="title">${recipe.result?.name || 'Rezept des Tages'}</h1>
-            ${ recipe.result?.content || '<p>Keine Inspiration verfügbar.</p>'}
-        </article>
+      <article class="content">
+          <h1 class="title">${recipe.result?.name || 'Rezept des Tages'}</h1>
+          ${ recipe.result?.content || '<p>Keine Inspiration verfügbar.</p>'}
+      </article>
     </div>
     `;
   }
   afterRender(container) {
+    // console.log('[HomeView][afterRender] container is',container);
     const favDB = new FavoritesDB();
     const refreshOrBack = document.getElementById("btn-refresh-or-back");
     const btnToggleFavorite = container.querySelector('#toggle-favorite');
     // Den linken nav button mit refresh verknüpfen
-    refreshOrBack.value = 'refresh';
-    refreshOrBack.closest('form').onsubmit = (evt) => {
+    refreshOrBack && (refreshOrBack.value = 'refresh');
+    refreshOrBack && (refreshOrBack.closest('form').onsubmit = (evt) => {
         evt.preventDefault();
         router.navigateTo("/");
-    };
+    });
     
     // toggle favorite
     btnToggleFavorite.closest('form').onsubmit = (evt) => {
         evt.preventDefault();
         const isFav = favDB.toggleFavorite(btnToggleFavorite.dataset.id);
         btnToggleFavorite.value = isFav?'favorite':'favorite_outlined';
+        const favListChanged = new CustomEvent('favlistchanged');
+        document.body.dispatchEvent(favListChanged);
     }
   }
 }

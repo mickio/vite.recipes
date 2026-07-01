@@ -48,10 +48,10 @@ const styles = `
 :host([data-transition="slide-down"]), :host([data-transition="slide-left"]), :host([data-transition="slide-right"]) {
   transition: transform var(--duration) cubic-bezier(0.68, .55, 0.265, 1);
 }
-:host([data-transition="slide-down"]:state(enter):state(start)),:host([data-transition="slide-left"]:state(leave):state(end)) {
+:host([data-transition="slide-down"]:state(enter):state(start)),:host([data-transition="slide-down"]:state(leave):state(end)) {
   transform: translateY(var(--y-start));
 }
-:host([data-transition="slide-down"]:state(enter):state(end)),:host([data-transition="slide-left"]:state(leave):state(start)) {
+:host([data-transition="slide-down"]:state(enter):state(end)),:host([data-transition="slide-down"]:state(leave):state(start)) {
   transform: translateY(var(---end));
 }
 :host([data-transition="slide-left"]:state(enter):state(start)),:host([data-transition="slide-left"]:state(leave):state(end)) {
@@ -93,6 +93,25 @@ const styles = `
   opacity: 0;
 }
 `
+export const evtTransitionEnd = (tc) => new Promise(resolve => {
+    const removeHandler = (evt) => {
+    if (evt && evt.target !== tc) return; 
+    let timeoutId;
+    // console.log(`[evtTransitionEnd] catched transitionend ${tc.id}`)
+    if (tc.getAnimations().length === 0) {
+      // console.log('[evtTransitionEnd] removing evt listeners');
+      tc.removeEventListener('transitionend',removeHandler);
+      tc.removeEventListener('transitioncancel',removeHandler);
+      clearTimeout(timeoutId);
+      resolve()
+    } 
+    }
+    tc.addEventListener('transitionend',removeHandler)
+    tc.addEventListener('transitioncancel',removeHandler)
+    let timeout = getComputedStyle(tc).transitionDuration
+    timeout *= 1000
+    setTimeout(removeHandler,timeout+50)
+})
 
 class Transition extends HTMLElement {
 
@@ -138,7 +157,7 @@ class Transition extends HTMLElement {
       // Use internal states to control transitions
       this._internals = this.attachInternals();
       this._internals.states.add('hidden');
-      // console.log('### C O N S T R U C T E D')
+      // console.log(`[transition][${this.id??this.parentElement.tagName}][constructor] transition element created, initial state is hidden`);
     }
 
     toggleStart () {
@@ -176,7 +195,7 @@ class Transition extends HTMLElement {
     run(enterLeave) {
       if (!this[enterLeave]())
         return false
-       // this.addEventListener('transitionstart',() => console.log('started transition'),{once:true})
+      // this.addEventListener('transitionstart',() => console.log(`[transition][${this.id?this.id:''}][run ${enterLeave}] started transition`),{once:true});
       this.toggleStart()
       // console.log(`[transition][${this.id?this.id:''}][run] starting transition`,enterLeave,this.transition);
       void this.offsetHeight;// reflow erzwingen...
@@ -216,25 +235,30 @@ class Transition extends HTMLElement {
     }
     
     async hide () {
+      // console.log(`[transition][${this.id??this.parentElement.tagName}][hide] hiding transition container...`);
       if (this.run('toggleLeave')) 
         await evtTransitionEnd(this);
+      else
+        // console.log(`[transition][${this.id??this.parentElement.tagName}][hide] no leave transition defined, hiding immediately`);
       this._internals.states.add('hidden');
     }
     
     async show () {
       this._internals.states.delete('hidden');
       this.run('toggleEnter')
+      await evtTransitionEnd(this);
+      // console.log(`[transition][${this.id??this.parentElement.tagName}][show] transition container is now visible`);
     }
 
     connectedCallback() {
-      // console.log('### C O N N E C T E D')
       this.shadowRoot.innerHTML = '<slot/>';
+      // console.log(`[transition][${this.id??this.parentElement.tagName}][connectedCallback] connected to DOM, shadowRoot is`,this.shadowRoot);
       // console.log('[connectedCallback] preventDefault ?','preventDefault' in this.dataset);
       if ('preventDefault' in this.dataset)   {
-        // console.log(`[transition][connectedCallback] prevent default`)
+        // console.log(`[transition][${this.id??this.parentElement.tagName}][connectedCallback] prevent default`)
         return;
       }
-      // console.log(`[transition][${this.id??''}][connectedCallback] start transition ${this.dataset.params?.enter?.name}...`)
+      // console.log(`[transition][${this.id??this.parentElement.tagName}][connectedCallback] start transition ${this.dataset.params?.enter?.name}...`)
       this.show();
     }
     
@@ -247,7 +271,7 @@ class Transition extends HTMLElement {
         this._internals.states.add('hidden');
       }
       else if (attName === 'data-params') {
-        console.log(`[transition][${this.id??''}][attributeChangedCallback] setting data-params`,JSON.parse(newValue));
+        // console.log(`[transition][${this.id??this.parentElement.tagName}][attributeChangedCallback] setting data-params`,JSON.parse(newValue));
         const params = JSON.parse(newValue)
         if (params.enter) {
           this.enterName = params.enter.name
@@ -273,22 +297,3 @@ class Transition extends HTMLElement {
 
 customElements.define('transition-container',Transition);
 // console.log('[transition.to js] custom element tc defined?',window.customElements.getName(Transition));
-export const evtTransitionEnd = (tc) => new Promise(resolve => {
-    const removeHandler = (evt) => {
-    if (evt && evt.target !== tc) return; 
-    let timeoutId;
-    // console.log('[evtTransitionEnd] catched transitionend')
-      if (tc.getAnimations().length === 0) {
-        // console.log('[evtTransitionEnd] removing evt listeners');
-        tc.removeEventListener('transitionend',removeHandler);
-        tc.removeEventListener('transitioncancel',removeHandler);
-        clearTimeout(timeoutId);
-        resolve()
-      } 
-    }
-    tc.addEventListener('transitionend',removeHandler)
-    tc.addEventListener('transitioncancel',removeHandler)
-    let timeout = getComputedStyle(tc).transitionDuration
-    timeout *= 1000
-    setTimeout(removeHandler,timeout+50)
-})

@@ -2,6 +2,7 @@ import AbstractView from "./AbstractView.js";
 import recipeDetails from '../templates/recipeDetails.js';
 import { proxy } from "../services/recipeProxy.js";
 import { router } from '../router.js';
+import FavoritesDB from '../services/recipeCache.js';
 
 export default class DetailView extends AbstractView {
   async getHtml() {
@@ -9,10 +10,9 @@ export default class DetailView extends AbstractView {
     const url = this.params.url;
     const fullRecipe = await proxy.getDetails(title, url);
     const recipe = {...this.params,...fullRecipe.result};
-    console.log('DetailView gets:',recipe,this.params);
     return `
       <div class="recipe-details">
-        ${recipeDetails(recipe)}
+        ${recipeDetails(recipe,fullRecipe.isFavorite)}
       </div>
     `;
   }
@@ -25,6 +25,17 @@ export default class DetailView extends AbstractView {
       evt.preventDefault();
       router.navigateBackTo(/^\/search/);
     };
+    // toggle favorite
+    const favDB = new FavoritesDB();
+    const btnToggleFavorite = container.querySelector('#toggle-favorite');
+    btnToggleFavorite.closest('form').onsubmit = (evt) => {
+        evt.preventDefault();
+        const isFav = favDB.toggleFavorite(btnToggleFavorite.dataset.id);
+        btnToggleFavorite.value = isFav?'favorite':'favorite_outlined';
+        const favListChanged = new CustomEvent('favlistchanged');
+        document.body.dispatchEvent(favListChanged);
+        console.log('[DetailView][afterRender] toggle favorite for',btnToggleFavorite.dataset.id,isFav)
+    }
   }
 }
 const colors = ['purple','orange','green','yellow','silver-blue','brick-red'];

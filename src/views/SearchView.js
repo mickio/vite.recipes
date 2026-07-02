@@ -66,7 +66,7 @@ export default class SearchView extends AbstractView {
     refreshOrBack.value = 'west';
     refreshOrBack.closest('form').onsubmit = (evt) => {
       evt.preventDefault();
-      router.navigateBackTo(/^\/randomRecipe/);
+      router.navigateBackTo(/^\/randomRecipe/) || navigateTo('/');
     };
     
     /*/ 2. Bilder zeigen

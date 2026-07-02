@@ -238,8 +238,9 @@ class Transition extends HTMLElement {
       // console.log(`[transition][${this.id??this.parentElement.tagName}][hide] hiding transition container...`);
       if (this.run('toggleLeave')) 
         await evtTransitionEnd(this);
-      else
-        // console.log(`[transition][${this.id??this.parentElement.tagName}][hide] no leave transition defined, hiding immediately`);
+      else {
+        console.info(`[transition][${this.id??this.parentElement.tagName}][hide] no leave transition defined, hiding immediately`);
+      }
       this._internals.states.add('hidden');
     }
     

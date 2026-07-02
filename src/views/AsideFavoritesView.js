@@ -5,7 +5,7 @@ import favEntry from '../templates/recipeFavoriteEntry.js';
 export default class extends AbstractView {
   async getHtml() {
     return `
-<transition-container id="sidebar-container" data-params='{"enter":{"name":"slide-left"},"leave":{"name":"slide-left"}}' data-prevent-default>
+<transition-container id="sidebar-container" data-params='{"enter":{"name":"slide-left","xStart":"800px"},"leave":{"name":"slide-left"}}' data-prevent-default style="--aside-width: ${Math.min(800,screen.width)}px; --aside-min-width: ${Math.min(600,screen.width)}px">
     <div class="panel-header">
         <icon>search</icon>
         <input id="search-favorites" type="search" placeholder="Suche in der Merkliste">

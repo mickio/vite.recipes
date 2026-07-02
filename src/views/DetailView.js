@@ -23,7 +23,7 @@ export default class DetailView extends AbstractView {
     refreshOrBack.value = 'west';
     refreshOrBack.closest('form').onsubmit = (evt) => {
       evt.preventDefault();
-      router.navigateBackTo(/^\/search/);
+      router.navigateBackTo(/^\/search/) || router.navigateBackTo(/^\/random/) || navigateTo('/');
     };
     // toggle favorite
     const favDB = new FavoritesDB();

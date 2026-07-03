@@ -238,6 +238,8 @@ class Transition extends HTMLElement {
     
     async hide () {
       // console.log(`[transition][${this.id??this.parentElement.tagName}][hide] hiding transition container...`);
+      if (this.isHidden) 
+        return;
       if (this.run('toggleLeave')) 
         await evtTransitionEnd(this);
       else {

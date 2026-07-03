@@ -1,61 +1,36 @@
 main {
   position: relative;
-  /*max-width: 600px;*/
   height: 100vh;
   width: 100%;
   overflow: hidden;
-    /*border: 1px solid #ccc;
-  background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
 }
 nav, aside {
-    width:100vw;
-    height: 0;
+	width:100vw;
+	height: 0;
 }
 
 .floating {
   position:absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-#background, #front {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /*padding: 20px;*/
-  overflow-y: auto; /* Erlaubt Scrollen, falls das Rezept lang ist */
-}
-
 /* Initialer Zustand: Blau und zentriert */
 #background.initial {
-  background-color: #0056b3;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  font-weight: bold;
+    height: 100vh;
+    background-color: #0056b3;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
 }
-
-/* Standardzustand für das Background-Div nach dem Austausch */
-#background {
-  background-color: white;
-  color: #333;
-  display: block; /* Hebt das Flexbox-Centering auf */
-}
-
-/* Das Front-Div wartet unsichtbar auf der rechten Seite */
-#front {
-  background-color: white;
-  color: #333;
-  transform: translateX(100%);
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 10;
-}
+.initial .text-container {
+    text-align: center;
+    max-width: 80%;
+}   
 
 /* Styling für das Endless Scrolling */
 #infinite-scroll-trigger {
@@ -70,176 +45,129 @@ nav, aside {
   display: none !important;
 }
 
-/* Styling für das Endless Scrolling */
-#infinite-scroll-trigger {
-  height: 1px; /* Minimal hoch, damit der Observer anschlägt */
-  width: 100%;
-  background: transparent;
-}
-
-#search-loading {
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  color: #666;
-  font-style: italic;
-}
-
-.no-results {
-  color: #999;
-  font-style: italic;
-}
-
 /* G A L E R Y */
-  .observed {
-    position: relative;
-    height: 40px;
-    margin:10px;
-  } 
-  .observed button {
-    background-color: #6b5b955c;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    text-align: center;
-    line-height: 40px;
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-  .observed button:hover {
-    background-color: var(--purple);
-  }
-  .observed button:active {
-    background-color: #4019a3;
-  }
-  .observed button:nth-child(2) {
-    /* Wenn button 2. Element im container (Wenn Loading, dann 2.), button ausblenden */
-    display: none;
-  }
-	.gallery {
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: center;
-		align-items: stretch;
-	}
+.gallery {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: stretch;
+}
 	
 /* R E C I P E  T E A S E R */
-	.gallery-item {
-		flex: 1 1 ;
-		max-width: 500px;
-		min-width: 360px;
-		/* max-height: 100vh; */
-	}
-	.gallery-item article {
-		display: flex;
-		flex-direction: column;
-	}
-	figcaption > a {
-		margin: 20px;
-		display: block;
-		text-decoration: none;
-		color: aliceblue;
-		font-size: 24px;
-		font-style: oblique;
-		text-shadow: 2px 2px 50px black,1px 1px 5px blue;	
-	}
-	figcaption > a:hover {
-		text-shadow: 2px 2px 50px black,1px 1px 5px red;
-		font-style: normal;
-	}
-	figcaption > a::after {
-		font-family: 'Material Icons';
-		content: 'launch';
-	}
-	.gallery-item h1 > a {
-		font-size: inherit;
-		font-family: inherit;
-		background-color: inherit;
-		text-decoration: none;
-		border: none;
-		color: inherit;
-		cursor: pointer;
-		padding: 1px 4px;
-	}
-	.gallery-item h1 > a:hover {
-		font-style: oblique;
-		text-decoration: underline white;
-	}
-	.gallery-item h1 > a:active {
-		color:whitesmoke;
-		font-style: normal;
-		text-decoration: none;
-	}
+.gallery-item {
+	flex: 1 1 ;
+	max-width: 500px;
+	min-width: 360px;
+	/* max-height: 100vh; */
+}
+.gallery-item article {
+	display: flex;
+	flex-direction: column;
+}
+figcaption > a {
+	margin: 20px;
+	display: block;
+	text-decoration: none;
+	color: aliceblue;
+	font-size: 24px;
+	font-style: oblique;
+	text-shadow: 2px 2px 50px black,1px 1px 5px blue;	
+}
+figcaption > a:hover {
+	text-shadow: 2px 2px 50px black,1px 1px 5px red;
+	font-style: normal;
+}
+figcaption > a::after {
+	font-family: 'Material Icons';
+	content: 'launch';
+}
+.gallery-item h1 > a {
+	font-size: inherit;
+	font-family: inherit;
+	background-color: inherit;
+	text-decoration: none;
+	border: none;
+	color: inherit;
+	cursor: pointer;
+	padding: 1px 4px;
+}
+.gallery-item h1 > a:hover {
+	font-style: oblique;
+	text-decoration: underline white;
+}
+.gallery-item h1 > a:active {
+	color:whitesmoke;
+	font-style: normal;
+	text-decoration: none;
+}
 .gallery-item figure {
-		width:100%;
-		min-height: 200px;
-		max-height: 50vh;
-		margin: 0 0 -7px 0;
-		position: relative;
-		overflow: hidden;
-	}
-	figcaption {
-		width: max-content;
-		bottom: 0;
-		position: absolute;
-	}
-	.gallery-item h1 {
-		text-align: center;
-		font-size: 36px;
-		line-height: 48px;	
-		color: white;	
-		flex: 1 1 auto;
-		padding: 35px 35px 0 35px;
-	}
-	.gallery-item p {
-		font-size: 15px;
-		line-height: 20px;
-		color: white;
-		flex: 1 1 auto;
-		padding: 0 35px;
-	}
-	.gallery-item img {
-		object-fit: cover;
-		width: 100%;
-		min-height: 200px;
-	}
-	.gallery-item .info-box {
-		display: flex;
-	  	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Oxygen-Sans, Ubuntu, Cantarell,
-               "Helvetica Neue", sans-serif;
-		color: aliceblue;
-		justify-content: flex-start;
-		flex-wrap: wrap;
-		max-width: 100%;
-		padding: 20px;
-	}
-	.gallery-item .info-box div {
-		flex: 0 0 auto;
-		margin-right: 20px
-	}
-	.gallery-item .info-box h2{
-		font-size: x-small;
-		font-variant: small-caps;
-		margin: 0;
-		line-height: 10px;
-		text-align: left;
-	}
-	/* R E C I P E  D E T A I L S  styles */
-	/* floating action buttons */
-	#fab {
-		background: none;
-		border: none;
-		/* font-size: 36px; */
-		position: absolute;
-		bottom: 30px;
-		right: 30px;
-		/* width:40px; */
-		cursor: pointer;
-	}
-	#fab input[type=submit] {
+	width:100%;
+	min-height: 200px;
+	max-height: 50vh;
+	margin: 0 0 -7px 0;
+	position: relative;
+	overflow: hidden;
+}
+figcaption {
+	width: max-content;
+	bottom: 0;
+	position: absolute;
+}
+.gallery-item h1 {
+	text-align: center;
+	font-size: 36px;
+	line-height: 48px;	
+	color: white;	
+	flex: 1 1 auto;
+	padding: 35px 35px 0 35px;
+}
+.gallery-item p {
+	font-size: 15px;
+	line-height: 20px;
+	color: white;
+	flex: 1 1 auto;
+	padding: 0 35px;
+}
+.gallery-item img {
+	object-fit: cover;
+	width: 100%;
+	min-height: 200px;
+}
+.gallery-item .info-box {
+	display: flex;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+		   Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+		   "Helvetica Neue", sans-serif;
+	color: aliceblue;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	max-width: 100%;
+	padding: 20px;
+}
+.gallery-item .info-box div {
+	flex: 0 0 auto;
+	margin-right: 20px
+}
+.gallery-item .info-box h2{
+	font-size: x-small;
+	font-variant: small-caps;
+	margin: 0;
+	line-height: 10px;
+	text-align: left;
+}
+/* R E C I P E  D E T A I L S  styles */
+/* floating action buttons */
+#fab {
+	background: none;
+	border: none;
+	/* font-size: 36px; */
+	position: absolute;
+	bottom: 30px;
+	right: 30px;
+	/* width:40px; */
+	cursor: pointer;
+}
+#fab input[type=submit] {
 	padding: 15px;
 	border: unset;
 	/* border-radius: 25px;
@@ -265,532 +193,507 @@ nav, aside {
 	transition: background-color 0.5s ease-in-out;
 } */
 	.pdf-button {
-		right: 80px; /* Position next to the favorite button */
-		color: white;
-		text-shadow: 1px 1px 5px black;
+	right: 80px; /* Position next to the favorite button */
+	color: white;
+	text-shadow: 1px 1px 5px black;
 	}
 	.inspiration article,
 	.recipe-details article {
-		scrollbar-width: thin;
-		background-color: white;
-		width: 100%;
-		overflow-y: scroll;
-		/* scroll-snap-type: y mandatory; */
-	    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Oxygen-Sans, Ubuntu, Cantarell,
-               "Helvetica Neue", sans-serif;
+	scrollbar-width: thin;
+	background-color: white;
+	width: 100%;
+	overflow-y: scroll;
+	/* scroll-snap-type: y mandatory; */
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+		   Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+		   "Helvetica Neue", sans-serif;
 	}
 	.inspiration div 
-    .recipe-details div {
-        background-color: white;
-    }
-	.recipe-details figure, .inspiration figure {
-		/* scroll-snap-align: start; */
-		width:100%;
-		max-height: 50vh;
-		margin: 0 0 -7px 0;
-		position: relative;
-		overflow: hidden;
-		/* z-index: -1; */
-		/* top: -46px; */
-		min-height: 200px;
-	}
-	.recipe-details img, .inspiration img, .inspiration iframe {
-		object-fit: cover;
-		/* object-position: center; */
-		width: 100%;
-		min-height: 100%;
-	}
-	.recipe-details .navbar-item {
-		position: absolute;
-		top: 70%;
-		right: 40px;
-		cursor: pointer;
-	}
-	.material-icons {
-		font-size: 48px;
-		color: red;
-		text-shadow: 2px 2px 20px rgb(139, 1, 1);
+	.recipe-details div {
+	background-color: white;
+}
+.recipe-details figure, .inspiration figure {
+	/* scroll-snap-align: start; */
+	width:100%;
+	max-height: 50vh;
+	margin: 0 0 -7px 0;
+	position: relative;
+	overflow: hidden;
+	/* z-index: -1; */
+	/* top: -46px; */
+	min-height: 200px;
+}
+.recipe-details img, .inspiration img, .inspiration iframe {
+	object-fit: cover;
+	/* object-position: center; */
+	width: 100%;
+	min-height: 100%;
+}
+.recipe-details .navbar-item {
+	position: absolute;
+	top: 70%;
+	right: 40px;
+	cursor: pointer;
+}
+.material-icons {
+	font-size: 48px;
+	color: red;
+	text-shadow: 2px 2px 20px rgb(139, 1, 1);
 	}
 .inspiration section,
 .recipe-details section {
-		padding: 0 30px 30px 30px;
-		position: relative;
-		/* scroll-snap-align: start; */
+	padding: 0 30px 30px 30px;
+	position: relative;
+	/* scroll-snap-align: start; */
 	}
 .inspiration h1,
 .recipe-details h1 {
-		font-size: 60px;
-		line-height: 80px;	
-		text-align: center;
+	font-size: 60px;
+	line-height: 80px;	
+	text-align: center;
 	}
 .inspiration p,
 .recipe-details p {
-		font-size: 15px;
-		line-height: 20px;
-		flex: 1 1 auto;
+	font-size: 15px;
+	line-height: 20px;
+	flex: 1 1 auto;
 	}
 	.recipe-details .info-box {
-		display: flex;
-		padding-bottom: 15px;
-		flex-wrap: wrap;
-		max-width: 100%;
+	display: flex;
+	padding-bottom: 15px;
+	flex-wrap: wrap;
+	max-width: 100%;
 	}
 	.recipe-details .info-box div {
-		flex: 0 0 auto;
-		margin-right: 20px
+	flex: 0 0 auto;
+	margin-right: 20px
 	}
 	.recipe-details .info-box h2{
-		font-size: x-small;
-		font-variant: small-caps;
-		margin: 0;
-		line-height: 10px;
-		text-align: left;
+	font-size: x-small;
+	font-variant: small-caps;
+	margin: 0;
+	line-height: 10px;
+	text-align: left;
 	}
 	/* Ingredients and instructions */
 	.inspiration .content,
 	.recipe-details .content {
-		columns: 360px;
-		/* max-height: 100vh; */
-		overflow-y: scroll;
+	columns: 360px;
+	/* max-height: 100vh; */
+	overflow-y: scroll;
 	}
 	.ingredients {
-		scroll-snap-align: start;
-		width: 70%;
-		margin-left: 2em;
-		margin-top: 0.5em;
-		padding: 1em 40px;
-		background-color: var(--yellow);
-    font-variant: small-caps;
-		margin-bottom: 30px;
-		break-inside: avoid-column;
-		display: inline-block;
-  }
-	.ingredients>p {
-		font-size: 18px;
-		margin: 9px 0;
-		display: block;
-		padding-bottom: 9px;
-		border-bottom: 1px solid #c0872b;
+	scroll-snap-align: start;
+	width: 70%;
+	margin-left: 2em;
+	margin-top: 0.5em;
+	padding: 1em 40px;
+	background-color: var(--yellow);
+	font-variant: small-caps;
+	margin-bottom: 30px;
+	break-inside: avoid-column;
+	display: inline-block;
+}
+.ingredients>p {
+	font-size: 18px;
+	margin: 9px 0;
+	display: block;
+	padding-bottom: 9px;
+	border-bottom: 1px solid #c0872b;
+}
+.ingredients>p:first-child{
+	margin-top: 9px;
+}
+.ingredients>p:last-child{
+	border: none
+}
+.instructions {
+	padding: 0 20px;
+	position: relative;
+	scroll-snap-align: start;
+}
+.instruction {
+	scroll-snap-align: start;
+	font-size: 20px;
+	line-height: 30px;
+	padding: 0 2em 2em 2em;
+	counter-increment: par-counter;
+	break-inside: avoid-column;
+	display: inline-block;
+}
+.instruction::before {
+	content: counter(par-counter);
+	display: inline-block;
+	margin: 0 25px 0 -25px;
+	vertical-align: 10px;
+	padding-bottom: 5px;
+	font-size: 200%;
+}
+@media screen and (min-width: 480px) {
+	.is-float-left-tablet {
+		float: left;
 	}
-	.ingredients>p:first-child{
-		margin-top: 9px;
+}
+@media screen and (max-width: 480px) {
+    .recipe-details article {
+		scroll-snap-type: unset;
 	}
-	.ingredients>p:last-child{
-		border: none
+	.inspiration .content,
+	.recipe-details .content{
+		max-height: unset;
+	}
+	.ingredients {
+		margin:0;
+		width: calc(100% - 80px);
 	}
 	.instructions {
-		padding: 0 20px;
-		position: relative;
-		scroll-snap-align: start;
-  }
+		columns: unset;
+		padding: unset;
+		/* min-height: 100vh; */
+	}
 	.instruction {
+		max-height: 100vh;
+		/* overflow-y: scroll; */
 		scroll-snap-align: start;
-		font-size: 20px;
-		line-height: 30px;
-		padding: 0 2em 2em 2em;
-		counter-increment: par-counter;
-		break-inside: avoid-column;
+		padding: unset;
+	}
+	.instruction::before{
+		margin: 0 25px 0 0px;
+	}
+	/* .is-flex-column-scroll-snap-mobile {
+		overflow-x: scroll;
+		scroll-snap-type: x mandatory;
+		display: flex;
+		column-gap: 40px;
+	} */
+	/* .is-flexbox-scroll-snap-mobile {
+		flex: 0 0 100%;
+		width: 100vw;
+		padding:0;
+		scroll-snap-align: end;
 		display: inline-block;
+	} */
+	.is-smaller-mobile {
+		font-size: 40px;
+		line-height: 60px;
 	}
-	.instruction::before {
-		content: counter(par-counter);
-		display: inline-block;
-		margin: 0 25px 0 -25px;
-		vertical-align: 10px;
-		padding-bottom: 5px;
-		font-size: 200%;
+}
+@media screen and (min-width: 1408px) {
+	.instruction {
+		font-size: 24px;
+		line-height: 40px;
 	}
-	@media screen and (min-width: 480px) {
-		.is-float-left-tablet {
-			float: left;
-		}
-	}
-	@media screen and (max-width: 480px) {
-.recipe-details article {
-			scroll-snap-type: unset;
-		}
-		.inspiration .content,
-		.recipe-details .content{
-			max-height: unset;
-		}
-		.ingredients {
-			margin:0;
-			width: calc(100% - 80px);
-		}
-		.instructions {
-			columns: unset;
-			padding: unset;
-			/* min-height: 100vh; */
-		}
-		.instruction {
-			max-height: 100vh;
-			/* overflow-y: scroll; */
-			scroll-snap-align: start;
-			padding: unset;
-		}
-		.instruction::before{
-			margin: 0 25px 0 0px;
-		}
-		/* .is-flex-column-scroll-snap-mobile {
-			overflow-x: scroll;
-			scroll-snap-type: x mandatory;
-			display: flex;
-			column-gap: 40px;
-		} */
-		/* .is-flexbox-scroll-snap-mobile {
-			flex: 0 0 100%;
-			width: 100vw;
-			padding:0;
-			scroll-snap-align: end;
-			display: inline-block;
-		} */
-		.is-smaller-mobile {
-			font-size: 40px;
-			line-height: 60px;
-		}
-	}
-	@media screen and (min-width: 1408px) {
-		.instruction {
-			font-size: 24px;
-			line-height: 40px;
-		}
 	.inspiration .content,
 	.recipe-details .content {
-		columns: 620px;
-		}
+	columns: 620px;
 	}
+}
 	
 /* K O C H G E N O S S E N */
-    .inspiration {
-        background-color: white;
-        max-width: 1200px;
-        margin: 0 auto;
-        width: 100vw;
-        overflow-y: auto;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Oxygen-Sans, Ubuntu, Cantarell,
-               "Helvetica Neue", sans-serif;
-    }
-    .inspiration article {
-        padding: 30px;
-        box-sizing: border-box;
-    }
-    .inspiration p:has(a,img) {
-        max-height: 20vh;
-        overflow-x: auto;
-    }
-    .inspiration p IMG {
-        max-width: none !important;
-        width: auto;
-    }
+.inspiration {
+	background-color: white;
+	max-width: 1200px;
+	margin: 0 auto;
+	width: 100vw;
+	overflow-y: auto;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+		   Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+		   "Helvetica Neue", sans-serif;
+}
+.inspiration article {
+	padding: 30px;
+	box-sizing: border-box;
+}
+.inspiration p:has(a,img) {
+	max-height: 20vh;
+	overflow-x: auto;
+}
+.inspiration p IMG {
+	max-width: none !important;
+	width: auto;
+}
   
   
-  /* N A V B A R */
-  	#nav-container {
-  	    position: fixed;
-  	    top: 0;
-        z-index: 10;;
-        display: flex;
-        justify-content: space-between;
-        width: calc(100% - 80px);
-        /* top: 40px; */
-        margin: 40px auto;
-        left: 40px;
-        right: 40px;
-    }  
-    form.search-container {
-        position: relative;
-        display: flex;
-        align-content: center;
-    }
-    form.search-container:hover input[type=search], form.search-container input[type=search]:focus{
-        width: 250px;
-        outline: var(--brick-red) solid 1.5px;
-        transition: all 0.5s ease-in-out;
-        font-size: large;
-    }
-    .search-container input[type=search] {
-        background-color: hsla(120,1%,10%,0.5);
-        border-bottom-left-radius: 25px;
-        border-top-left-radius: 25px;
-        margin: unset;
-        border-style: none;
-        outline: 1.5px solid hsla(120,1%,10%,0.5);
-        color: white;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        padding: 15px;
-        width: 100px;
-        transition: all 0.5s ease-in-out;
-    }
-    .search-container input[type=submit] {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;    
-    }
+/* N A V B A R */
+#nav-container {
+  	position: fixed;
+  	top: 0;
+	z-index: 10;;
+	display: flex;
+	justify-content: space-between;
+	width: calc(100% - 80px);
+	/* top: 40px; */
+	margin: 40px auto;
+	left: 40px;
+	right: 40px;
+}  
+form.search-container {
+	position: relative;
+	display: flex;
+	align-content: center;
+}
+form.search-container:hover input[type=search], form.search-container input[type=search]:focus{
+	width: 250px;
+	outline: var(--brick-red) solid 1.5px;
+	transition: all 0.5s ease-in-out;
+	font-size: large;
+}
+.search-container input[type=search] {
+	background-color: hsla(120,1%,10%,0.5);
+	border-bottom-left-radius: 25px;
+	border-top-left-radius: 25px;
+	margin: unset;
+	border-style: none;
+	outline: 1.5px solid hsla(120,1%,10%,0.5);
+	color: white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding: 15px;
+	width: 100px;
+	transition: all 0.5s ease-in-out;
+}
+.search-container input[type=submit] {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;	
+}
 
-    /* Für das aufblähen des Merkliste Icon */
-    .blink {
-        /* font-size: 40px !important;
-        border-radius: 50px !important;
-        line-height: 40px !important; */
-        transition: all .1s ease-in;
-        background-color: white !important;
-        color: black !important;
-        }
+/* Für das aufblähen des Merkliste Icon */
+.blink {
+	/* font-size: 40px !important;
+	border-radius: 50px !important;
+	line-height: 40px !important; */
+	transition: all .1s ease-in;
+	background-color: white !important;
+	color: black !important;
+}
 
-    /* Für das close icon */
-    icon {
-        position: absolute;
-        color: white;
-        font-family: "Material Icons";
-        top: 15px;
-        right: 60px;
-        font-size: large;
-        cursor: pointer;
-    }
-    nav input[type=submit] {
-        padding: 15px;
-        border: unset;
-        border-radius: 25px;
-        outline: var(--brick-red) solid 1.5px;
-        font-family: 'Material Icons';
-        font-size: 20px;
-        font-weight: 700;
-        line-height: 20px;
-        color: white;
-        background-color: var(--brick-red);
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        transition: background-color 0.2s ease-in-out;
-        transition: all .1s ease-in;
-    }
-    nav input[type=submit]:hover {
-        background-color: var(--orange);
-        transition: background-color 0.2s ease-in-out;
-    }
-    nav input[type=submit]:active {
-        background-color: var(--green);
-        transition: background-color 0.5s ease-in-out;
-    }
-    /* Ende navbar */
+/* Für das close icon */
+icon {
+	position: absolute;
+	color: white;
+	font-family: "Material Icons";
+	top: 15px;
+	right: 60px;
+	font-size: large;
+	cursor: pointer;
+}
+nav input[type=submit] {
+	padding: 15px;
+	border: unset;
+	border-radius: 25px;
+	outline: var(--brick-red) solid 1.5px;
+	font-family: 'Material Icons';
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 20px;
+	color: white;
+	background-color: var(--brick-red);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	transition: background-color 0.2s ease-in-out;
+	transition: all .1s ease-in;
+}
+nav input[type=submit]:hover {
+	background-color: var(--orange);
+	transition: background-color 0.2s ease-in-out;
+}
+nav input[type=submit]:active {
+	background-color: var(--green);
+	transition: background-color 0.5s ease-in-out;
+}
+/* Ende navbar */
 
 /* S I D E B A R */
-    /* Die sidebar für die Merkliste */
-    .modal {
-        /* background: white; */
-        top: 0;
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        backdrop-filter: blur(3px);
+/* Die sidebar für die Merkliste */
+.modal {
+	/* background: white; */
+	top: 0;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	backdrop-filter: blur(3px);
+}
+#sidebar-container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	max-width: var(--aside-width);
+	min-width: var(--aside-min-width);
+	background: white;
+	box-shadow: 2px 2px 20px rgb(95, 95, 95);
+}
+@media screen and (max-width: 600px) {
+	aside {
+        width: 100vw
     }
-    #sidebar-container {
-        position: fixed;
-        top: 0;
-        right: 0;
-        /* height: 100vh; */
-        max-width: var(--aside-width);
-        min-width: var(--aside-min-width);
-        /* margin-top: 200px; */
-        background: white;
-        /* transform: translateX(800px);
-        transition: transform .3s ease-in; */
-        box-shadow: 2px 2px 20px rgb(95, 95, 95);
-    }
-    @media screen and (maxWidth < 600px) {
-        aside {width: 100vw}
-    }
-    /* aside.is-visible {
-        transform: translateX(0);
-        transition: transform .3s ease-in;
-    } */
-    /* aside input[type=submit] {
-        border-bottom-right-radius: 0;
-        border-top-right-radius: 0;
-        position: absolute;
-        top: 30px;
-        left: -50px;
-        outline: solid white 2px;
-    } */
+}
 
-    /* Der Header zum Filtern von Einträgen */
-    .panel-header {
-        padding: 5px;
-    }
-    .panel-header input[type=search] {
-        color: black;
-        background-color: white;
-        padding: 10px 10px 10px 30px;
-        width: calc(100% - 60px);
-        border-radius: 3px;
-        box-shadow: none;
-        border: 1px grey solid;
-    }
-    .panel-header input[type=search]:focus {
-        border: 1px darkgray solid;
-    }
-    .panel-header icon:nth-of-type(1) {
-        color: grey;
-        top: 14px;
-        right: unset;
-        left:13px;
-        cursor: unset;
-    }
-    .panel-header icon:nth-of-type(2) {
-        color: black;
-        top: 5px;
-        right: 5px;
-        font-size: xx-large;
-    }
-    .panel-content {
-        height: calc(100vh - 100px);
-        overflow-y: scroll;
-    }
-    /* ein entry */
-    .card {
-        position: relative;
-        display: flex;
-        /* height: 100px;  */
-        margin:2px; 
-        border-bottom: darkgrey 1px solid;
-        cursor: pointer;
-        padding-right: 50px;
-    }
-    .card:hover {
-        background-color: var(--purple);
-        color: white;
-    }
-    .card > .card-image > img {
-        object-fit: cover;
-        height: 100%;
-        width: 100px;
-        max-height: 100px;
-    }
-    .card > .card-content {
-        padding: 10px;
-        width: 100%;
-        /* height: 80%;
-        overflow: hidden; */
-    }
-    .card > .card-content > h1 {
-        font-size: large;
-        margin: 0 0 7px 0;
-    }
-    .card form {
-        position: absolute;
-        top: 50%;
-        right:10px;
-        transform: translateY(-50%);
-    }
-    .card input[type=submit] {
-        border: none;
-        background: none;
-        font-family: "Material Icons";
-        font-size: 30px;
-        color: white;
-        /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
-    }
-    @media screen and (max-width: 600px) {
-        .card {
-            height: unset;
-        }
-        /* .card form {
-            display: none;
-        } */
-        .card > .card-content {
-            height: unset;
-        }
-        .card > .card-content > h1 {
-            font-size: large;
-            margin: 7px 0;
-        }
-        .card .card-image {
-            display:none;
-        }
-        div.info-box {
-            display: none;
-        }
-    }
-    /* optionale info-box*/
-	.info-box {
-		display: flex;
-		flex-wrap: wrap;
-		max-width: 100%;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+/* Der Header zum Filtern von Einträgen */
+.panel-header {
+    padding: 5px;
+}
+.panel-header input[type=search] {
+    color: black;
+    background-color: white;
+    padding: 10px 10px 10px 30px;
+    width: calc(100% - 60px);
+    border-radius: 3px;
+    box-shadow: none;
+    border: 1px grey solid;
+}
+.panel-header input[type=search]:focus {
+    border: 1px darkgray solid;
+}
+.panel-header icon:nth-of-type(1) {
+	color: grey;
+	top: 14px;
+	right: unset;
+	left:13px;
+	cursor: unset;
+}
+.panel-header icon:nth-of-type(2) {
+	color: black;
+	top: 5px;
+	right: 5px;
+	font-size: xx-large;
+}
+.panel-content {
+	height: calc(100vh - 100px);
+	overflow-y: scroll;
+}
+/* ein entry */
+.card {
+	position: relative;
+	display: flex;
+	/* height: 100px;  */
+	margin:2px; 
+	border-bottom: darkgrey 1px solid;
+	cursor: pointer;
+	padding-right: 50px;
+}
+.card:hover {
+	background-color: var(--purple);
+	color: white;
+}
+.card > .card-image > img {
+	object-fit: cover;
+	height: 100%;
+	width: 100px;
+	max-height: 100px;
+}
+.card > .card-content {
+	padding: 10px;
+	width: 100%;
+	/* height: 80%;
+	overflow: hidden; */
+}
+.card > .card-content > h1 {
+	font-size: large;
+	margin: 0 0 7px 0;
+}
+.card form {
+	position: absolute;
+	top: 50%;
+	right:10px;
+	transform: translateY(-50%);
+}
+.card input[type=submit] {
+	border: none;
+	background: none;
+	font-family: "Material Icons";
+	font-size: 30px;
+	color: white;
+	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+}
+@media screen and (max-width: 600px) {
+	.card {
+		height: unset;
 	}
-	.info-box div {
-		flex: 0 0 auto;
-		margin-right: 20px;
-        max-width:calc(33% - 20px);
+	/* .card form {
+		display: none;
+	} */
+	.card > .card-content {
+		height: unset;
 	}
-	.info-box h2{
-		font-size: x-small;
-		font-variant: small-caps;
-		margin: 0;
-		line-height: 10px;
-		text-align: left;
+	.card > .card-content > h1 {
+		font-size: large;
+		margin: 7px 0;
 	}
+	.card .card-image {
+		display:none;
+	}
+	div.info-box {
+		display: none;
+	}
+}
+/* optionale info-box*/
+.info-box {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 100%;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.info-box div {
+	flex: 0 0 auto;
+	margin-right: 20px;
+	max-width:calc(33% - 20px);
+}
+.info-box h2{
+	font-size: x-small;
+	font-variant: small-caps;
+	margin: 0;
+	line-height: 10px;
+	text-align: left;
+}
 	
-    /* Die Buttons zum laden/speichern der Merkliste */
-    .load {
-        box-sizing: border-box;
-        height: 50px;
-        width: 100%;
-        padding: 1px 3px 3px 3px;
-        display: grid;
-        grid-template-columns: repeat(2,1fr);
-        gap: 3px;
-    }
-    .load a, .load label {
-        text-decoration: none;
-        color: #6b5b95;
-        border-radius: 5px;
-        border: 2px #6b5b95cc solid;
-        background-color: white;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-    .load label {
-        cursor: pointer;
-    }
-    .load div, .load label {
-        box-sizing: border-box;
-        display: inline-block;
-        line-height: 40px;
-        text-align: center;
-        width: 100%;
-    }
-    .load a:hover, .load label:hover {
-        border-color: var(--purple);
-        background-color: var(--purple);
-        color: white;
-    }
-    .load div.download::before {
-        font-family: "Material Icons";
-        /* font-size: x-large; */
-        content: "download";
-    }
-    .load label::before {
-        font-family: "Material Icons";
-        content: "upload";
-    }
-    .upload input {
-        display: none
-    }
-    /* Die berührungsempfinlichen Bereiche fürs Wischen */
-    .touch {
-        width:20px;
-        height: 80vh;
-        position: fixed;
-        top:100px;
-        z-index: 1;
-    }
-    .touch.right {
-        right:0;
-    }
-    /* F L O A T */
-    #msg-container {
-        position: fixed;
-        top:0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
+/* Die Buttons zum laden/speichern der Merkliste */
+.load {
+	box-sizing: border-box;
+	height: 50px;
+	width: 100%;
+	padding: 1px 3px 3px 3px;
+	display: grid;
+	grid-template-columns: repeat(2,1fr);
+	gap: 3px;
+}
+.load a, .load label {
+	text-decoration: none;
+	color: #6b5b95;
+	border-radius: 5px;
+	border: 2px #6b5b95cc solid;
+	background-color: white;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.load label {
+	cursor: pointer;
+}
+.load div, .load label {
+	box-sizing: border-box;
+	display: inline-block;
+	line-height: 40px;
+	text-align: center;
+	width: 100%;
+}
+.load a:hover, .load label:hover {
+	border-color: var(--purple);
+	background-color: var(--purple);
+	color: white;
+}
+.load div.download::before {
+	font-family: "Material Icons";
+	/* font-size: x-large; */
+	content: "download";
+}
+.load label::before {
+	font-family: "Material Icons";
+	content: "upload";
+}
+.upload input {
+	display: none
+}
+/* F L O A T */
+#msg-container {
+	position: fixed;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}

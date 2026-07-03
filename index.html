@@ -14,11 +14,13 @@
 <body>
   <nav id="navbar"></nav>
   <main>
-    <transition-container id="initial-view" data-params='{"leave":{"name":"fade"}}' data-display-at-start>
+    <transition-container id="initial-view" class="initial" data-params='{"leave":{"name":"fade"}}' data-display-at-start>
       <div id="background" class="initial">
-        <p style="padding:20px;">
-          Ein zufälliges Rezept von Kochgenossen.at. Eine empfehlenswerte Site für eine hohe Trefferquote ohne aufdringliche Werbung!
-        </p>
+        <div class="text-container"
+          <p style="padding:20px;">
+            Ein zufälliges Rezept von Kochgenossen.at. Eine empfehlenswerte Site für eine hohe Trefferquote ohne aufdringliche Werbung!
+          </p>
+        </div>
       </div>
     </transition-container>
   </main>

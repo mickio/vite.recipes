@@ -26,6 +26,7 @@ export default class extends AbstractView {
     `
   }
   afterRender(fragment) {
+    const navbar = this.$('nav-container');
     // Das Suchfeld in der Kopfzeile kontrollieren
     const searchForm = this.$('search-form');
     const searchInput = this.$("search-input");
@@ -39,13 +40,17 @@ export default class extends AbstractView {
     
     // sidebar togglen
     const btnToggleSidebar = this.$('btn-open-sidebar');
-    const navbar = this.$('nav-container');
     btnToggleSidebar.closest('form').onsubmit = evt => {
         evt.preventDefault();
         const sidebar = document.getElementById('sidebar-container');
         navbar.toggle(); // navbar schließen
         sidebar.toggle();
     }
+    // Navbar soll verschwinden, wenn gescrollt wird und mit einer Berührung des oberen Bildschirmrands wieder erscheinen. 
+    document.body.addEventListener('scroll', navbar.hide, true); 
+    document.body.addEventListener('mouseleave', ({clientY}) => {
+      if (clientY <= 0) navbar.show();
+    });
   }
   
 }

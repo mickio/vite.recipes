@@ -39,9 +39,11 @@ export default class extends AbstractView {
     
     // sidebar togglen
     const btnToggleSidebar = this.$('btn-open-sidebar');
+    const navbar = this.$('nav-container');
     btnToggleSidebar.closest('form').onsubmit = evt => {
         evt.preventDefault();
         const sidebar = document.getElementById('sidebar-container');
+        navbar.toggle(); // navbar schließen
         sidebar.toggle();
     }
   }

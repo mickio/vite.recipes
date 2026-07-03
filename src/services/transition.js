@@ -222,6 +222,8 @@ class Transition extends HTMLElement {
     
     get entered() { return this._internals.states.has('enter') }
 
+    get isHidden() { return this._internals.states.has('hidden') }
+
     async remove () {
       // console.log('[transition][remove] starting transition')
       if (!this.run('toggleLeave')) {

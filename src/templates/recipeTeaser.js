@@ -1,5 +1,5 @@
 export default (recipeData,index) => `
-<article class="${recipeData.color}" data-index="${index??0}"> 
+<article class="${recipeData.color}"> 
 	<!--transition-container data-prevent-default data-transition="enlarge" style="height:fit-content;"-->
 	<figure>
 		<img src=${recipeData.thumbnail?.src} alt=${recipeData.title}>

@@ -36,9 +36,11 @@ export default class HomeView extends AbstractView {
         </div>        
       </figure>
         
-      <article class="content">
+      <article class="text-content">
           <h1 class="title">${recipe.result?.name || 'Rezept des Tages'}</h1>
-          ${ recipe.result?.content || '<p>Keine Inspiration verfügbar.</p>'}
+          <div class="content">
+            ${ recipe.result?.content || '<p>Keine Inspiration verfügbar.</p>'}
+          </div>
       </article>
     </div>
     `;

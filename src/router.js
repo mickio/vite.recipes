@@ -1,7 +1,8 @@
 import HomeView from "./views/HomeView.js";
 import SearchView from "./views/SearchView.js";
 import DetailView from "./views/DetailView.js";
-import Error404View from "./views/Error404View.js"; // Neu hinzugefügt
+import Error404View from "./views/Error404View.js";
+import { toast } from './utils.js';
 
 const SLIDELEFT = { name: 'slide-left' };
 const FADE = { name: 'fade' };
@@ -124,15 +125,7 @@ class Router {
       currentPage = await createPage(newRoute);
     } catch (error) {
       console.error(`[router][route] Fehler beim Erstellen der Seite für ${newRoute.path}:`, error);
-      const errorEvent = new CustomEvent("toast", {
-        detail: {
-          color: "red",
-          title: "Das hätte nicht passieren dürfen...",
-          text: error.message
-        }
-      });
-      document.body.dispatchEvent(errorEvent);
-      return;
+      toast("Das hätte nicht passieren dürfen...", error.message,"red");
     }
 
     this._animateAndRender(prevPage, currentPage, newRoute);

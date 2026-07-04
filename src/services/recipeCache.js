@@ -27,7 +27,6 @@ export default class RecipeCache {
   filterAllFavorites (term) {
     const filterFun = (item) => term ? JSON.stringify(item).toLowerCase().includes(term.toLowerCase()) : true;
     const favs = this.getAllFavorites();
-    console.log('filter all favorites',favs)
     return favs.filter(filterFun)
   }
 

@@ -13,14 +13,14 @@ export default class SearchView extends AbstractView {
 
   async getHtml() {
     const query = this.params.q || "";
-    console.log('[SearchView][getHtml] query is:',query)
+    // console.log('[SearchView][getHtml] query is:',query)
     
     // Iterator initialisieren (10er-Schritte sind Standard)
     this.iterator = proxy.searchIterator(query);
     
     // Die ersten 10 Treffer für den initialen Render holen
     const result = await this.iterator.next();
-    console.log('[SearchView][getHtml] searchResult',result)
+    // console.log('[SearchView][getHtml] searchResult',result)
     let listItems = "";
 
     if (result.value && result.value.result && Array.isArray(result.value.result)) {

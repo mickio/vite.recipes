@@ -11,12 +11,10 @@ class RecipeProxy {
     };
   }
 
-  // Hilfsmethode zur Validierung der Payload-Struktur
   _isValidResponse(data) {
-    console.log('[recipeProxy][_isValidResponse] führe plausi check durch:',data);
+    // console.log('[recipeProxy][_isValidResponse] führe plausi check durch:',data);
     return (
-      data && 
-      data.result // Sicherstellen, dass es kein Array ist
+      data && data.result
     );
   }
 
@@ -25,16 +23,15 @@ class RecipeProxy {
     // Erst im Cache nach der URL suchen
     const cached = this.cache.getRecipe(url);
     if (cached) {
-      console.log("🎯 Proxy: Match im Cache gefunden!");
+      // console.log("🎯 Proxy: Match im Cache gefunden!");
       return cached;
     }
 
-    console.log("🌐 Proxy: Rufe API ab...");
+    // console.log("🌐 Proxy: Rufe API ab...");
     const apiUrl = `${this.baseUrl}/details/${encodeURIComponent(title)}?url=${encodeURIComponent(url)}`;
     
     const response = await fetch(apiUrl);
     
-    // NEU: Nur fortfahren, wenn HTTP-Status OK (200-299) ist
     if (!response.ok) {
       console.warn(`⚠️ Proxy: API-Fehler (Status ${response.status})`);
       return await response.json(); // Gibt die Fehlermeldung des Servers ungecached weiter
@@ -42,7 +39,7 @@ class RecipeProxy {
 
     const data = await response.json();
 
-    // NEU: Nur cachen, wenn result existiert und ein Objekt ist
+    // Nur cachen, wenn gültiges recipe
     if (this._isValidResponse(data)) {
       return this.cache.saveRecipe(data, url);
     } else {
@@ -63,7 +60,7 @@ class RecipeProxy {
 
     const data = await response.json();
 
-    // NEU: Nur cachen, wenn result ein gültiges Objekt ist
+    // Nur cachen, wenn result ein gültiges Objekt ist
     if (this._isValidResponse(data)) {
       return this.cache.saveRecipe(data);
     } else {
@@ -80,7 +77,7 @@ class RecipeProxy {
     let currentResultLength = 100;
 
     // Falls eine NEUE Suche gestartet wird, den Cache zurücksetzen
-    console.log(`[RecipeProxy][searchIterator] currentStart = ${currentStart}!, query is "${query}", length items is "${proxy.searchCache.items.length}`)
+    // console.log(`[RecipeProxy][searchIterator] currentStart = ${currentStart}!, query is "${query}", length items is "${proxy.searchCache.items.length}`)
     if (proxy.searchCache.query !== query) {
       proxy.searchCache.query = query;
       proxy.searchCache.items = [];
@@ -91,7 +88,7 @@ class RecipeProxy {
       async next() {
         // Fall 1: Sind wir ganz am Anfang (currentStart === CSE_PAGINATION_START) UND haben bereits Daten im Cache?
       if (currentStart === CSE_PAGINATION_START && proxy.searchCache.items.length > CSE_PAGINATION_START) {
-        console.log(`🎯 Proxy: Bediene initialen Render komplett aus dem Cache (${proxy.searchCache.items.length} Treffer)`);
+        // console.log(`🎯 Proxy: Bediene initialen Render komplett aus dem Cache (${proxy.searchCache.items.length} Treffer)`);
         
         // Wir setzen den Zeiger sofort ans Ende des bisherigen Caches
         currentStart = proxy.searchCache.items.length;
@@ -101,7 +98,7 @@ class RecipeProxy {
           value: { result: proxy.searchCache.items },
           done: currentResultLength <  currentStart
         };
-      }
+      } 
 
         // Fall 2: Keine Cache-Daten da? API abfragen
         const currentEnd = currentStart + pageSize;
@@ -122,7 +119,7 @@ class RecipeProxy {
             return { value: null, done: true };
           }
 
-          // NEU: Die frisch geladenen Items in unseren Proxy-Suchcache schieben
+          // Die frisch geladenen Items in unseren Proxy-Suchcache schieben
           proxy.searchCache.items.push(...data.result);
           
           currentStart = currentEnd;

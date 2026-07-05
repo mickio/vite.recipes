@@ -27,12 +27,22 @@ export default class SearchView extends AbstractView {
       this.searchResult = result.value.result;
       listItems = this._generateResultsListHtml(this.searchResult);
     } else {
-      listItems = "<p class='no-results'>Keine Ergebnisse gefunden.</p>";
+      listItems = `
+            <div id="background" class="initial">
+        <div class="text-container">
+          <p style="padding:20px;">
+            <b>Ein Satz mit X! </b>
+          </p>
+          <p style="padding:20px;">
+            Google hat leider nix!
+          </p>
+        </div>
+      </div>
+`;
     }
 
     return `
       <div class="view-search">
-        <h3>Suchergebnisse für "${query}"</h3>
         
         <div class="gallery">${listItems}</div>
         

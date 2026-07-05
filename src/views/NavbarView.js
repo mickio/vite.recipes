@@ -27,7 +27,8 @@ export default class extends AbstractView {
   }
   afterRender(fragment) {
     const navbar = this.$('nav-container');
-    // Das Suchfeld in der Kopfzeile kontrollieren
+    
+    // Suchfeld
     const searchForm = this.$('search-form');
     const searchInput = this.$("search-input");
     searchForm.addEventListener("submit", e => {
@@ -41,15 +42,26 @@ export default class extends AbstractView {
     // sidebar togglen
     const btnToggleSidebar = this.$('btn-open-sidebar');
     btnToggleSidebar.closest('form').onsubmit = evt => {
-        evt.preventDefault();
-        const sidebar = document.getElementById('sidebar-container');
-        navbar.toggle(); // navbar schließen
-        sidebar.toggle();
+      evt.preventDefault();
+      const sidebar = document.getElementById('sidebar-container');
+      navbar.toggle(); // navbar schließen
+      sidebar.toggle();
     }
     // Navbar soll verschwinden, wenn gescrollt wird und mit einer Berührung des oberen Bildschirmrands wieder erscheinen. 
-    document.body.addEventListener('scroll', navbar.hide, true); 
-    document.body.addEventListener('mouseleave', ({clientY}) => {
-      if (clientY <= 0) navbar.show();
+    let isScrolling = null;
+    const setIsScrolling = (scrolling) => {
+      if(!isScrolling)
+        isScrolling = new Date();
+    };
+    const hideNavbar = () => {
+      if (!navbar.isHidden && isScrolling && (new Date() - isScrolling) > 500)
+        navbar.hide();
+      isScrolling = null;
+    };
+    document.body.addEventListener('scroll', setIsScrolling, true);
+    document.body.addEventListener('scrollend', hideNavbar, true);
+    document.body.addEventListener('pointermove', ({clientY}) => {
+      if (navbar.isHidden && clientY <= 60) navbar.show();
     });
   }
   

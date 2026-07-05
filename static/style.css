@@ -63,6 +63,7 @@ nav, aside {
 .gallery-item article {
 	display: flex;
 	flex-direction: column;
+	height: 100%;
 }
 figcaption > a {
 	margin: 20px;

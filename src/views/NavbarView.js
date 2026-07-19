@@ -13,7 +13,7 @@ export default class extends AbstractView {
       <div class="navbar-center">
         <form id="search-form" class="search-container">
           <input id="search-input" name="q" type="search" placeholder="Rezeptname oder Zutaten" required>
-          <icon class="hidden">close</icon>
+          <icon id="delete-searchterm" class="hidden">close</icon>
           <input type="submit" value="search">
         </form>
       </div>
@@ -38,6 +38,20 @@ export default class extends AbstractView {
         router.navigateTo(`/search?q=${encodeURIComponent(query)}`);
       }
     });
+
+    // Löschen des Suchfeldinhalts
+    const deleteSearchTermBtn = this.$('delete-searchterm');
+    deleteSearchTermBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      deleteSearchTermBtn.classList.add('hidden');
+    });
+    searchInput.addEventListener('input', () => {
+      if (searchInput.value.trim() === '') {
+        deleteSearchTermBtn.classList.add('hidden');
+      } else {
+        deleteSearchTermBtn.classList.remove('hidden');
+      }
+    });
     
     // sidebar togglen
     const btnToggleSidebar = this.$('btn-open-sidebar');
@@ -47,21 +61,23 @@ export default class extends AbstractView {
       navbar.toggle(); // navbar schließen
       sidebar.toggle();
     }
-    // Navbar soll verschwinden, wenn gescrollt wird und mit einer Berührung des oberen Bildschirmrands wieder erscheinen. 
+    // Navbar soll verschwinden, wenn gescrollt wird und mit einer Berührung des oberen Bildschirmrands wieder erscheinen - aber nur, wenn sidebar geschlossen ist. 
     let isScrolling = null;
     const setIsScrolling = (scrolling) => {
       if(!isScrolling)
         isScrolling = new Date();
     };
     const hideNavbar = () => {
-      if (!navbar.isHidden && isScrolling && (new Date() - isScrolling) > 500)
+      const sidebar = document.getElementById('sidebar-container');
+      if (sidebar.isHidden && !navbar.isHidden && isScrolling && (new Date() - isScrolling) > 500)
         navbar.hide();
       isScrolling = null;
     };
     document.body.addEventListener('scroll', setIsScrolling, true);
     document.body.addEventListener('scrollend', hideNavbar, true);
     document.body.addEventListener('pointermove', ({clientY}) => {
-      if (navbar.isHidden && clientY <= 60) navbar.show();
+      const sidebar = document.getElementById('sidebar-container');
+      if (sidebar.isHidden && navbar.isHidden && clientY <= 60) navbar.show();
     });
   }
   

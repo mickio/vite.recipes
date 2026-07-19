@@ -258,32 +258,32 @@ figcaption {
 	font-size: 15px;
 	line-height: 20px;
 	flex: 1 1 auto;
-	}
-	.recipe-details .info-box {
+}
+.recipe-details .info-box {
 	display: flex;
 	padding-bottom: 15px;
 	flex-wrap: wrap;
 	max-width: 100%;
-	}
-	.recipe-details .info-box div {
+}
+.recipe-details .info-box div {
 	flex: 0 0 auto;
 	margin-right: 20px
-	}
-	.recipe-details .info-box h2{
+}
+.recipe-details .info-box h2{
 	font-size: x-small;
 	font-variant: small-caps;
 	margin: 0;
 	line-height: 10px;
 	text-align: left;
-	}
-	/* Ingredients and instructions */
+}
+/* Ingredients and instructions */
 	.inspiration .content,
 	.recipe-details .content {
 	columns: 360px;
 	/* max-height: 100vh; */
 	overflow-y: scroll;
-	}
-	.ingredients {
+}
+.ingredients {
 	scroll-snap-align: start;
 	width: 70%;
 	margin-left: 2em;
@@ -422,12 +422,17 @@ figcaption {
 	z-index: 10;;
 	display: flex;
 	justify-content: space-between;
-	width: calc(100% - 80px);
+	/* width: 100vw;calc(100% - 80px);*/
 	/* top: 40px; */
-	margin: 40px auto;
-	left: 40px;
-	right: 40px;
+	padding: 10px 40px;
+	left: 0;
+	right: 0;
+	background-color: hsla(120,1%,100%,0.7);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }  
+.navbar-right,.navbar-right > form,.navbar-left, navbar-left > form {
+	align-content: center;
+}
 form.search-container {
 	position: relative;
 	display: flex;
@@ -435,42 +440,43 @@ form.search-container {
 }
 form.search-container:hover input[type=search], form.search-container input[type=search]:focus{
 	width: 250px;
-	outline: var(--brick-red) solid 1.5px;
+	/* outline: black solid 1.5px; */
+	background-color: hsla(120,1%,100%,0.7);
 	transition: all 0.5s ease-in-out;
 	font-size: large;
 }
 .search-container input[type=search] {
-	background-color: hsla(120,1%,10%,0.5);
-	border-bottom-left-radius: 25px;
-	border-top-left-radius: 25px;
+	background-color: transparent;/*hsla(120,1%,10%,0.5);*/
+	/* border-bottom-left-radius: 25px;
+	border-top-left-radius: 25px; */
 	margin: unset;
 	border-style: none;
-	outline: 1.5px solid hsla(120,1%,10%,0.5);
-	color: white;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	border: 1.5px solid hsla(120,1%,10%,0.5);
+	/* color: white; */
+	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 	padding: 15px;
 	width: 100px;
 	transition: all 0.5s ease-in-out;
 }
-.search-container input[type=submit] {
+/* .search-container input[type=submit] {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;	
-}
+} */
 
 /* Für das aufblähen des Merkliste Icon */
-.blink {
+/* .blink {
 	/* font-size: 40px !important;
 	border-radius: 50px !important;
-	line-height: 40px !important; */
+	line-height: 40px !important; /
 	transition: all .1s ease-in;
 	background-color: white !important;
 	color: black !important;
-}
+} */
 
 /* Für das close icon */
 icon {
 	position: absolute;
-	color: white;
+	color: black;
 	font-family: "Material Icons";
 	top: 15px;
 	right: 60px;
@@ -478,28 +484,30 @@ icon {
 	cursor: pointer;
 }
 nav input[type=submit] {
-	padding: 15px;
+	padding: 5px;
 	border: unset;
-	border-radius: 25px;
-	outline: var(--brick-red) solid 1.5px;
+	/* border-radius: 25px; */
+	/*outline: var(--brick-red) solid 1.5px;*/
 	font-family: 'Material Icons';
-	font-size: 20px;
-	font-weight: 700;
-	line-height: 20px;
-	color: white;
-	background-color: var(--brick-red);
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	transition: background-color 0.2s ease-in-out;
+	font-size: 36px;
+	font-weight: 200;
+	/* line-height: 20px; */
+	color: #3d3b4d;
+	background-color: transparent;
+	/* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	transition: background-color 0.2s ease-in-out;*/
 	transition: all .1s ease-in;
+	cursor: pointer;
 }
 nav input[type=submit]:hover {
-	background-color: var(--orange);
-	transition: background-color 0.2s ease-in-out;
+	color:black;
+	font-weight: 700;
+	transition: color, font-weight 0.2s ease-in-out;
 }
-nav input[type=submit]:active {
-	background-color: var(--green);
+/* nav input[type=submit]:active {
+	background-color: none;
 	transition: background-color 0.5s ease-in-out;
-}
+} */
 /* Ende navbar */
 
 /* S I D E B A R */

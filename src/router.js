@@ -1,19 +1,12 @@
-import HomeView from "./views/HomeView.js";
-import SearchView from "./views/SearchView.js";
-import DetailView from "./views/DetailView.js";
-import Error404View from "./views/Error404View.js";
 import { toast } from './utils.js';
 
-const SLIDELEFT = { name: 'slide-left' };
-const FADE = { name: 'fade' };
+export const SLIDELEFT = { name: 'slide-left' };
+export const FADE = { name: 'fade' };
 
-const routes = [
-  { path: /^\/(index.html|randomRecipe)?$/, viewCls: HomeView, enter: SLIDELEFT, leave: FADE },
-  { path: /^\/search/, viewCls: SearchView, enter: SLIDELEFT, leave: FADE },
-  { path: /^\/details/, viewCls: DetailView, enter: SLIDELEFT, leave: FADE },
-  // Fallback-Route für 404
-  { path: /.*/, viewCls: Error404View, enter: FADE, leave: SLIDELEFT }
-];
+const routes = [];
+export function registerRoute (route) {
+    routes.push(route)
+}
 
 const setTransitionParams = (element, key, value) => {
   if (!element) // Guard-Clause
@@ -57,6 +50,17 @@ class Router {
       if (link) {
         e.preventDefault();
         this.navigateTo(link.getAttribute("href"));
+        const cbName = link.dataset.callback;
+        if (!cbName) {
+            console.warn(`[router][clickOnLink] data-callback gesetzt aber keinen Namen angegeben`)
+            return
+        }
+        const callback = callbacks[cbName];
+        if (!callback) {
+            console.warn(`[router][clickOnLink] kein callback mit Namen ${cbName} gefunden`);
+            return 
+        }
+        callback(e)
       }
     });
 
@@ -123,14 +127,12 @@ class Router {
     let currentPage = null;
     try {
       currentPage = await createPage(newRoute);
+      this._animateAndRender(prevPage, currentPage, newRoute);
+      this.prevRoute = newRoute;
     } catch (error) {
       console.error(`[router][route] Fehler beim Erstellen der Seite für ${newRoute.path}:`, error);
       toast("Das hätte nicht passieren dürfen...", error.message,"red");
     }
-
-    this._animateAndRender(prevPage, currentPage, newRoute);
-    
-    this.prevRoute = newRoute;
   }
 
   // DOM-Aktualisierung und Transition-Zuweisung
@@ -153,3 +155,18 @@ class Router {
 }
 
 export const router = new Router();
+
+// zum registrieren von callbacks für life cycle hooks
+const callbacks = []
+export function registerCallback(fun,name) {
+    name = name || fun.name;
+    if (!name) {
+        console.warn('[router][tegisterCallback] callback hat keinen Namen. Mache nichts');
+        return
+    }
+    if (typeof fun !== "function") {
+        console.warn('[router][tegisterCallback] callback ist keine function. Mache nichts');
+        return
+    }
+    callbacks[name] = fun;
+}

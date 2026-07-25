@@ -63,18 +63,20 @@ export default class extends AbstractView {
     }
     // Navbar soll verschwinden, wenn gescrollt wird und mit einer Berührung des oberen Bildschirmrands wieder erscheinen - aber nur, wenn sidebar geschlossen ist. 
     let isScrolling = null;
-    const setIsScrolling = (scrolling) => {
+    const setIsScrolling = ({target}) => {
       if(!isScrolling)
-        isScrolling = new Date();
+        isScrolling = [new Date(),target.scrollTop];
     };
-    const hideNavbar = () => {
+    const toggleNavbar = ({target}) => {
       const sidebar = document.getElementById('sidebar-container');
-      if (sidebar.isHidden && !navbar.isHidden && isScrolling && (new Date() - isScrolling) > 500)
-        navbar.hide();
+      if (sidebar.isHidden && !navbar.isHidden && isScrolling && (new Date() - isScrolling[0]) > 500) 
+          target.scrollTop - isScrolling[1] > 0 && navbar.hide();
+      else if (sidebar.isHidden && navbar.isHidden && isScrolling && (new Date() - isScrolling[0]) > 500)
+          target.scrollTop - isScrolling[1] < 0 && navbar.show();  
       isScrolling = null;
     };
     document.body.addEventListener('scroll', setIsScrolling, true);
-    document.body.addEventListener('scrollend', hideNavbar, true);
+    document.body.addEventListener('scrollend', toggleNavbar, true);
     document.body.addEventListener('pointermove', ({clientY}) => {
       const sidebar = document.getElementById('sidebar-container');
       if (sidebar.isHidden && navbar.isHidden && clientY <= 60) navbar.show();

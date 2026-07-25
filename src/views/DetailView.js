@@ -1,4 +1,5 @@
 import AbstractView from "./AbstractView.js";
+import { activateVideoContainer } from './HomeView.js';
 import recipeDetails from '../templates/recipeDetails.js';
 import { proxy } from "../services/recipeProxy.js";
 import { router } from '../router.js';
@@ -6,7 +7,9 @@ import FavoritesDB from '../services/recipeCache.js';
 import { toast } from '../utils.js';
 
 export default class DetailView extends AbstractView {
+  
   async getHtml() {
+    document.title = "Kochbuch | " + (this.params.title || "");
     return `
       <div class="recipe-details">
  <article>
@@ -31,12 +34,13 @@ export default class DetailView extends AbstractView {
   }
 
   async afterRender(container) {
+    const thumbnail = this.$('head-img');
     // Back-Button Funktionalität
     const refreshOrBack = document.getElementById("btn-refresh-or-back");
     refreshOrBack.value = 'west';
     refreshOrBack.closest('form').onsubmit = (evt) => {
       evt.preventDefault();
-      router.navigateBackTo(/^\/search/) || router.navigateBackTo(/^\/random/) || navigateTo('/');
+      router.navigateBackTo(/^\/search/) || router.navigateBackTo(/^\/random/) || router.navigateTo('/');
     };
     
     // toggle favorite
@@ -92,58 +96,28 @@ export default class DetailView extends AbstractView {
       console.log(fullRecipe)
       
       // thumbnail ersetzen
-      const thumbnail = this.$('head-img');
-      // console.log('[DetailView][afterRender] thumbnail is',thumbnail,fullRecipe.result.image,Object.keys(fullRecipe.result.image).length > 0);
-      const image = document.createElement('img');
-      if (fullRecipe.result.image && Object.keys(fullRecipe.result.image).length > 0) {
-          image.alt=fullRecipe.result.title??fullRecipe.result.name??'Ohne Titel'
-          if (typeof fullRecipe.result.image === "string")
-              image.src = fullRecipe.result.image;
-          else
-              Object.entries(fullRecipe.result.image)
-          .forEach(([key, value]) => image[key] = value);
-          await image.decode();
-          thumbnail?.parentNode.replaceChild(image,thumbnail);
+      
+      console.log('[DetailView][afterRender] thumbnail is',thumbnail,fullRecipe.result.image);
+      const imgSources = fullRecipe.result.image || fullRecipe.result.images;
+      
+      if (typeof imgSources === "string" || (typeof imgSources === "object" && (imgSources.src ||  imgSources.srcset))) {
+        const image = document.createElement('img');
+        image.alt=fullRecipe.result.title??fullRecipe.result.name??'Ohne Titel'
+        if (typeof imgSources === "string")
+            image.src = imgSources;
+        else
+            Object.entries(imgSources)
+              .forEach(([key, value]) => image[key] = value);
+        await image.decode();
+        thumbnail?.parentNode.replaceChild(image,thumbnail);
+      } else if (fullRecipe.result.media) {
+        const media = document.createRange().createContextualFragment(fullRecipe.result.media);
+        thumbnail?.parentNode.replaceChild(media,thumbnail);
       }
-        
       // id für ❤️ könnte falsch sein
       btnToggleFavorite.dataset.id = fullRecipe.id;
       btnToggleFavorite.value = fullRecipe.isFavorite?'favorite':'favorite_outlined';
+      setTimeout(activateVideoContainer,500)
     } 
   }
 }
-const colors = ['purple','orange','green','yellow','silver-blue','brick-red'];
-const typefacesLarge = ['corben-nobile','droid','arvo-pt-sans','alerta-crimson','ubuntu-vollkorn','molengo-lekton','lobster-cabin'];
-const typefacesSmall = ['allan-cardo','dancing-script-josefin','raleway-goudy-bookletter']
-
-function colorDice() {
-  let lastColorInd = 0, colorInd = 0;
-  return function (param) {
-    while (lastColorInd === colorInd) {
-      colorInd = Math.round(Math.random()*5);
-    }
-    lastColorInd = colorInd;
-    return colors[colorInd] 
-  }
-}
-
-export const getRandomColor = colorDice ()
-
-function typefaceDice () {
-  let lastIndex=0,index=0;
-  return function (title) {
-    if (title.length > 30) {
-      while (lastIndex === index)
-        index = Math.round(Math.random()*2)
-      lastIndex = index
-      return typefacesSmall[index]
-    } else {
-      while (lastIndex === index)
-        index = Math.round(Math.random()*6)
-      lastIndex = index
-      return typefacesLarge[index]
-    }
-  }
-}
-
-export const getRandomTypeface = typefaceDice ()

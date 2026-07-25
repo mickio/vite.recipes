@@ -4,8 +4,8 @@ export default (recipe) => `
         <input type="submit" value="cancel">
     </form>
 
-    <div class="card-content ${recipe.typeface}" >
-        <h1><a href="/details?title=${recipe.result.title ?? recipe.result.name}&url=${recipe.result.link}" data-link>${recipe.result.title ?? recipe.result.name}</a></h1>
+    <div class="card-content ${recipe.result.typeface}" >
+        <h1><a href="/details?title=${recipe.result.title ?? recipe.result.name}&url=${recipe.result.link}&typeface=${recipe.result.typeface}" data-link data-callback="closeSidebar" >${recipe.result.title ?? recipe.result.name}</a></h1>
         <div class="info-box">
             ${recipe.result.prepTime ?`
                 <div>

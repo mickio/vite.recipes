@@ -11,10 +11,12 @@ export default class AbstractView {
     const content = await this.getHtml(this.params);
     const fragment = document.createRange().createContextualFragment(content);
     this.view = fragment;
+    // console.log('[getView] view:',this.view.childElementCount)
     this.afterRender(fragment);
     return fragment;
   }
   $ (id) {
+    // console.log('[$] suche element mit id',id,this.view.childElementCount);
     if (this.view && this.view.childElementCount > 0)
       return this.view.getElementById(id);
     // wenn es nicht mehr im fragment ist, muss es im DOM sein

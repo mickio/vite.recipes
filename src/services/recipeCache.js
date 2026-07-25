@@ -1,4 +1,4 @@
-const VERSION = "Merkzettel version 1";
+const VERSION = "Merkzettel version 2";
 
 export default class RecipeCache {
   constructor(storageKey = 'recipe_cache_data') {
@@ -13,6 +13,13 @@ export default class RecipeCache {
     return btoa(unescape(encodeURIComponent(url)))
       .replace(/=/g, '')
       .substr(-12); // Die letzten 12 Zeichen reichen
+  }
+
+  // Hilfsmethode zum Verwandeln eines Objects in ein Proxy-Objekt, um bei Änderungen saveRecipe aufzurufen
+  _createProxyForRecipe(recipe) {
+    if (!recipe) return null;
+    const self = this;
+    return createDeepProxy(recipe,() => self.saveRecipe(recipe));
   }
 
   getAll() {
@@ -37,7 +44,7 @@ export default class RecipeCache {
   getRecipe(idOrUrl) {
     const cache = this.getAll();
     const id = idOrUrl.startsWith('http') ? this.generateIdFromUrl(idOrUrl) : idOrUrl;
-    return cache[id] || null;
+    return this._createProxyForRecipe(cache[id]);
   }
 
   // cached Recipe, identifier ist link in
@@ -48,7 +55,7 @@ export default class RecipeCache {
     if (recipe.id && cache[recipe.id]) {
       cache[recipe.id] = { ...cache[recipe.id], ...recipe };
       this.saveAll(cache);
-      return cache[recipe.id];
+      return this._createProxyForRecipe(cache[recipe.id]);
     }
 
     // Falls keine ID vorhanden ist, generieren wir eine aus der URL
@@ -62,9 +69,10 @@ export default class RecipeCache {
       recipe.result.link = url; // Sicherstellen, dass der Link im result-Objekt vorhanden ist
     }
 
-    cache[id] = recipe;
+    if (!cache[id])
+        cache[id] = recipe;
     this.saveAll(cache);
-    return recipe;
+    return this._createProxyForRecipe(cache[id]);
   }
   
   toggleFavorite(idOrUrl) {
@@ -103,4 +111,30 @@ export default class RecipeCache {
       this.saveAll(merged);
     }
   }
+}
+function createDeepProxy(target, onChange) {
+  const handler = {
+    get(obj, prop, receiver) {
+      const value = Reflect.get(obj, prop, receiver);
+      
+      // Wenn die Eigenschaft ein Objekt ist, gebe rekursiv einen Proxy zurück
+      if (typeof value === 'object' && value !== null) {
+        return new Proxy(value, handler);
+      }
+      
+      return value;
+    },
+    set(obj, prop, value, receiver) {
+      const success = Reflect.set(obj, prop, value, receiver);
+      
+      // Nachricht ausgeben, wenn das Setzen erfolgreich war
+      if (success) {
+        onChange(prop, value);
+      }
+      
+      return success;
+    }
+  };
+
+  return new Proxy(target, handler);
 }

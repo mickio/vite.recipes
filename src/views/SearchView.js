@@ -2,7 +2,7 @@ import AbstractView from "./AbstractView.js";
 import { proxy } from "../services/recipeProxy.js";
 import { router } from "../router.js";
 import recipeTeaser from '../templates/recipeTeaser.js';
-import { getRandomColor, getRandomTypeface } from './DetailView.js';
+import { getRandomColor, getRandomTypeface } from '../utils.js';
 
 export default class SearchView extends AbstractView {
   constructor(params) {
@@ -13,7 +13,8 @@ export default class SearchView extends AbstractView {
 
   async getHtml() {
     const query = this.params.q || "";
-    // console.log('[SearchView][getHtml] query is:',query)
+    // console.log('[SearchView][getHtml] query is:',query);
+    document.title = "Kochbuch | Suche: " + (query || "");
     
     // Iterator initialisieren (10er-Schritte sind Standard)
     this.iterator = proxy.searchIterator(query);
@@ -76,7 +77,7 @@ export default class SearchView extends AbstractView {
     refreshOrBack.value = 'west';
     refreshOrBack.closest('form').onsubmit = (evt) => {
       evt.preventDefault();
-      router.navigateBackTo(/^\/randomRecipe/) || navigateTo('/');
+      router.navigateBackTo(/^\/randomRecipe/) || router.navigateTo('/');
     };
     
     /*/ 2. Bilder zeigen

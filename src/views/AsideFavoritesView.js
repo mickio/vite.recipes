@@ -1,6 +1,7 @@
 import AbstractView from "./AbstractView.js";
 import FavoritesDB from "../services/recipeCache.js";
 import favEntry from '../templates/recipeFavoriteEntry.js';
+import { registerCallback } from '../router.js';
 
 export default class extends AbstractView {
   async getHtml() {
@@ -107,3 +108,5 @@ const closeSidebar = () => {
     navbar.isHidden && navbar.show(); // navbar öffnen
     !sidebar.isHidden && sidebar.hide();
 }
+
+registerCallback(closeSidebar);

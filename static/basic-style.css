@@ -241,19 +241,19 @@ font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucid
 	background-color: var(--orange);
 }
 /* Fonts */
-.ubuntu-vollkorn h1 {
+.ubuntu-vollkorn h1, .ubuntu-vollkorn h2, .ubuntu-vollkorn h2 {
 	font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
 }
 .ubuntu-vollkorn p {
 	font-family: 'Vollkorn', Georgia, Times, serif;
 }
-.molengo-lekton h1 {
+.molengo-lekton h1, .molengo-lekton h2 {
 	font-family: 'Molengo', Georgia, Times, serif;
 }
 .molengo-lekton p {
 	font-family: 'Lekton', Helvetica, Arial, sans-serif;
 }
-.allan-cardo h1 {
+.allan-cardo h1, .allan-cardo h2 {
 	font-family: 'Allan', Helvetica, Arial, sans-serif;
 }
 .allan-cardo p {
@@ -271,13 +271,13 @@ font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucid
 .raleway-goudy-bookletter p {
 	font-family: 'Goudy Bookletter 1911', Georgia, Times, serif;
 }
-.lobster-cabin h1 {
+.lobster-cabin h1, .lobster-cabin h2 {
 	font-family: 'Lobster', Georgia, Times, serif;
 }
 .lobster-cabin p {
 	font-family: 'Cabin', Helvetica, Arial, sans-serif;
 }
-.corben-nobile h1 {
+.corben-nobile h1, .corben-nobile h2 {
 	font-family: 'Corben', Georgia, Times, serif;
 }
 .corben-nobile p {
@@ -295,7 +295,7 @@ font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucid
 .arvo-pt-sans p {
 	font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 }
-.alerta-crimson h1 {
+.alerta-crimson h1, .alerta-crimson h2 {
 	font-family: 'Allerta', Helvetica, Arial, sans-serif;
 }
 .alerta-crimson p {

@@ -235,14 +235,18 @@ figure img, .inspiration iframe {
 	}
 .inspiration section,
 .recipe-details section {
-	padding: 0 30px 30px 30px;
+	padding: 0 30px 30px 30px; 
 	position: relative;
 	/* scroll-snap-align: start; */
 	}
 .inspiration h1,
 .recipe-details h1 {
-	font-size: 60px;
-	line-height: 80px;	
+	/* font-size: 60px; */
+    font-size: clamp(1.2rem, 10vw, 4rem);
+    hyphens: auto;
+    hyphenate-limit-chars: 15 5 5;
+    overflow-wrap: break-word;
+	/*line-height: 80px;*/	
 	text-align: center;
 	}
 .inspiration p,
@@ -367,7 +371,12 @@ figure img, .inspiration iframe {
 		display: inline-block;
 	} */
 	.is-smaller-mobile {
-		font-size: 40px;
+        /* clamp(MIN_GRÖSSE, BEVORZUGTE_GRÖSSE, MAX_GRÖSSE) */
+        font-size: clamp(1.2rem, 5vw, 3.5rem);
+  
+        /* Wichtig als Absicherung für extrem lange Wörter */
+        hyphens: auto;
+        overflow-wrap: break-word;
 		line-height: 60px;
 	}
 }
@@ -440,10 +449,10 @@ figure img, .inspiration iframe {
 	padding: 30px;
 	box-sizing: border-box;
 }
-.content p:has(a,img), .content div:has(a,img) {
+.content p:has(a,img,iframe), .content div:has(a,img,iframe) {
 	max-width: 100%;
 }
-.content img {
+.content img, .content iframe {
 	width: 100%;
 	height: auto;
 }
@@ -555,7 +564,7 @@ nav input[type=submit]:active {
 .modal {
 	/* background: white; */
 	top: 0;
-	position: fixed;
+	position: sticky;
 	width: 100vw;
 	height: 100vh;
 	backdrop-filter: blur(3px);
